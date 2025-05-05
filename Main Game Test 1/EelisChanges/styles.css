@@ -1,0 +1,146 @@
+:root {
+    font-family: "VT323", monospace;
+    font-weight: 400;
+    --primary-color: #ffd52c;
+    --secondary-color: #ff5c00;
+    --tertiary-color: #c72d04;
+    --background-color: rgb(25,25,25);
+    scrollbar-color: var(--primary-color) var(--secondary-color);
+    font-size: clamp(18px, 3vw, 30px);
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--background-color);
+}
+div.retro-container {
+    background-color: rgb(0,0,0);
+    width: 65vw;
+    height: 70vh;
+    padding: 0.5rem;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    mask-image: linear-gradient(to bottom, #0005 50%, #000 50%);
+    mask-size: 100% 2px;
+    text-shadow: 0 0 0.5rem;
+}
+.retro-container {
+    position: relative;
+}
+
+#single {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+#single input[type="text"],
+#single input[type="submit"] {
+    background-color: rgb(0,0,0);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    mask-image: linear-gradient(to bottom, #0005 50%, #000 50%);
+    mask-size: 100% 2px;
+    text-shadow: 0 0 0.5rem;
+    padding: 0.2rem 0.15rem;
+    font-size: 0.5rem;
+}
+
+#single input[type="submit"]:hover {
+    background-color: var(--secondary-color);
+    color: black;
+    cursor: pointer;
+    box-shadow: 0 0 1rem var(--secondary-color);
+}
+#map { height: 180px; }
+
+#terminal{
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    height: 80%;
+}
+
+#map-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    height: 200px;
+    z-index: 10;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--primary-color);
+    z-index: 1;
+}
+
+.crt-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: linear-gradient(0deg, #0000 90%, #fff1 90%, #0000 100%);
+    animation: crtAnimation 70s linear infinite;
+    background-size: 100% 80%;
+    box-shadow: inset 0 0 1rem;
+    z-index: 2;
+}
+
+/* Custom CSS for the country labels */
+.country-label {
+    border-radius: 0;
+    font-size: 50%;   /* Make the font larger */
+    font-weight: bold; /* Make the font bold */
+    color: #ffd52c;    /* Change the text color to yellow (or any color) */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Optional: Add a shadow for better readability */
+}
+
+
+
+
+
+
+/* animation, please do not break
+**/
+
+@keyframes crtAnimation {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 10000%;
+    }
+}
+
+.old-crt-monitor {
+    box-shadow: inset 0 0 2rem;
+    background-image: linear-gradient(0deg, #0000 10%, #fff1 90%, #0000 100%);
+    animation: crtAnimation 100s linear infinite;
+    background-size: 100% 80%;
+}
+div.retro-container {
+    mask-image: linear-gradient(to bottom, #0005 50%, #000 50%);
+    mask-size: 100% 2px;
+}

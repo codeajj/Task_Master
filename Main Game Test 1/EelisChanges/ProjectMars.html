@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Retro Futuristic UI</title>
+<title>Site</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+
+</head>
+
+<body>
+
+    <div class="retro-container old-crt-monitor">
+        <header>
+            <h2>Project Mars 2!!!!!</h2>
+        </header>
+        <div id="terminal">terminal
+            <!-- Kaikki maat saat highlitetyksi tällä highlightCountryByName funktiolla -->
+                <button onclick="highlightCountryByName('France')">Highlight France</button>
+
+        </div>
+        <form id="single">
+            <input id="input" name="Important" type="text" placeholder=">">
+            <input type="submit" value="Submit">
+        </form>
+
+    </div>
+    <div id="map-wrapper">
+    <div id="map"></div>
+    <div class="crt-overlay"></div>
+</div>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<script src="map.js"></script>
+
+</body>
+</html>
