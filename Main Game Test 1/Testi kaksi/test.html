@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Retro Futuristic UI</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Terminal Panel -->
+        <div class="retro-container">
+            <div class="status-bar-container">
+                <span id="time">Time: 00:00</span>
+                <span id="lives">Lives: 3</span>
+                <span id="hints">Hints: 3</span>
+            </div>
+            <div id="terminal">
+                <!-- Terminal content will be injected here -->
+            </div>
+            <form id="input-form">
+                <input id="input" type="text" placeholder="> Enter Command">
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div id="level-info">
+                <p>Level: 1 (Argentina)</p>
+            </div>
+            <div class="buttons">
+                <button id="next-task">Next Task</button>
+                <button id="next-level" style="display: none;">Next Level</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="test.js"></script>
+</body>
+</html>
