@@ -74,3 +74,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
 });
+API = ""
+lat = ""
+lon = ""
+let info1 = "https://api.openweathermap.org/data/2.5/onecall?lat={"+lat+"}&lon={"+lon+"}&exclude={minutely,hourly,daily,alerts}&appid={"+API+"}'"
+let info = "https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid={8b108768946167124298f7ca3bc1b8f2}"
+
+fetch(info)
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.log(error))
+
+
+
+''
