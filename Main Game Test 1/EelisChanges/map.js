@@ -74,17 +74,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     };
 });
-API = ""
-lat = ""
-lon = ""
-let info1 = "https://api.openweathermap.org/data/2.5/onecall?lat={"+lat+"}&lon={"+lon+"}&exclude={minutely,hourly,daily,alerts}&appid={"+API+"}'"
-let info = "https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid={8b108768946167124298f7ca3bc1b8f2}"
+city="Trelew"
+api="d01e8c6c9527213014a1cbff4c710e10"
 
+let info = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+api+"&units=metric"
+console.log(info)
 fetch(info)
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.log(error))
-
-
-
-''
+    .then(r => r.json())
+    .then (data => {console.log(data);
+    showWeather(data)
+    showWeatherImage(data)
+    })
+function showWeather(data){
+    const description = data.weather[0].description
+    const temperature = data.main.temp
+    const descriptionDiv = document.getElementById("weather-here")
+    const heading = document.createElement("h6")
+    heading.innerHTML = description +" "+temperature+"°C"
+    descriptionDiv.appendChild(heading)
+}
+function showWeatherImage(data){
+    let search = "https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png"
+    fetch(search)
+        .then (r => r.blob())
+        .then ((blob)=> {
+            const imageUrl = URL.createObjectURL(blob)
+            const imageElement = document.createElement("img")
+            imageElement.src = imageUrl;
+            const container = document.getElementById("image-container")
+            container.appendChild(imageElement)
+        })}
