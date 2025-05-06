@@ -1,0 +1,31 @@
+.terminal-input {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.terminal-input input[type="text"] {
+    flex: 1;
+    background-color: black;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 16px;
+    padding: 0.3rem;
+    text-shadow: 0 0 0.2rem;
+}
+
+.terminal-input input[type="submit"] {
+    background-color: black;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 16px;
+    padding: 0.3rem 0.6rem;
+    text-shadow: 0 0 0.2rem;
+    cursor: pointer;
+}
+
+.terminal-input input[type="submit"]:hover {
+    background-color: var(--secondary-color);
+    color: black;
+    box-shadow: 0 0 0.5rem var(--secondary-color);
+}
