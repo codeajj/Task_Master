@@ -4,9 +4,19 @@ class GameLogic:
         self.level = 0
         self.tasks_done = 0 #Tarkastetaan onko min. tehty (5)
         self.current_task = None
-        self.task_index = { #Indexi on kyseisen maa
-            0: [self.task_0_0, self.task_0_1, self.task_0_2, self.task_0_3, self.task_0_4],
-            1: [self.task_1_0, self.task_1_1, self.task_1_2, self.task_1_3, self.task_1_4]
+        self.task_index = { #Maat
+            0: [self.task_0_0, self.task_0_1, self.task_0_2, self.task_0_3, self.task_0_4], #Argentina
+            1: [self.task_1_0, self.task_1_1, self.task_1_2, self.task_1_3, self.task_1_4], #Australia
+            #2: [self.task_2_0, self.task_2_1, self.task_2_2, self.task_2_3, self.task_2_4], #Mongolia
+            #3: [self.task_3_0, self.task_3_1, self.task_3_2, self.task_3_3, self.task_3_4], #China
+            #4: [self.task_4_0, self.task_4_1, self.task_4_2, self.task_4_3, self.task_4_4], #Germany
+            #5: [self.task_5_0, self.task_5_1, self.task_5_2, self.task_5_3, self.task_5_4], #Poland
+            #6: [self.task_6_0, self.task_6_1, self.task_6_2, self.task_6_3, self.task_6_4], #Luxemburg
+            #7: [self.task_7_0, self.task_7_1, self.task_7_2, self.task_7_3, self.task_7_4], #Norway
+            #8: [self.task_8_0, self.task_8_1, self.task_8_2, self.task_8_3, self.task_8_4], #South Korea
+            #9: [self.task_9_0, self.task_9_1, self.task_9_2, self.task_9_3, self.task_9_4], #America
+
+
         }
     def process_input(self, user_input): #Otetaan input, tarkastetaan mitä kirjoitettu.
         user_input = user_input.lower().strip()
@@ -22,7 +32,7 @@ class GameLogic:
         else:
             return self.handle_task_answer(user_input)
 
-    def next_task(self):
+    def next_task(self): #Tehtyjen tarkastus
         if self.tasks_done == 5:
             return "All tasks completed. Proceed to the next level."
         task = self.task_index[self.level][self.tasks_done]
@@ -30,7 +40,7 @@ class GameLogic:
         message, _ =task("question")
         return message
 
-    def next_level(self):
+    def next_level(self): #Seuraavaan siirtyminen
         if self.tasks_done < 5:
             return "No dumbass!"
         else:
@@ -39,12 +49,12 @@ class GameLogic:
             self.hp += 1
             return f"Level {self.level + 1}! You've gained 1 HP!"
 
-    def handle_task_answer(self, answer):
+    def handle_task_answer(self, answer): #Inputin vastaan otto, käsittely.
         if self.current_task is None:
             return "You must start a new task"
         result = self.current_task(answer)
 
-        if isinstance(result, tuple):
+        if isinstance(result, tuple): # Turha kysyä
             message, is_correct = result
         else:
             message = result
@@ -54,6 +64,8 @@ class GameLogic:
             self.tasks_done += 1
             self.current_task = None
         return message
+
+# Tehtävät alkaa tästä ----------------------->
 
     def task_0_0(self, answer):
         if answer == "question":
