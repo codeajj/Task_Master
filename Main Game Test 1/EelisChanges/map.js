@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 });
 city="Trelew"
-api="d01e8c6c9527213014a1cbff4c710e10"
+api=""
 
 let info = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+api+"&units=metric"
 console.log(info)
