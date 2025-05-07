@@ -10,7 +10,6 @@ def get_db_connection():
 
 class GameLogic:
     def __init__(self):
-        self.cancer = "None"
         self.game_state = True
         self.hp = 3; self.coins = 0; self.tries = 3 #Player status
         self.level = 0; self.tasks_done = 0; self.current_task = None #Task status
@@ -74,8 +73,29 @@ class GameLogic:
 
             connection = get_db_connection()
             cursor = connection.cursor()
-            cursor.execute("")
-            result = cursor.fetchall()
+
+            country_order = [
+                'Australia',
+                'Mongolia',
+                'China',
+                'Germany',
+                'Poland',
+                'Luxemburg',
+                'Norway',
+                'South Korea',
+                'America'
+            ]
+
+            if self.level - 1 < len(country_order):
+                next_country = country_order[self.level - 1]
+                cursor.execute(
+                    "SELECT name FROM country WHERE name = %s",
+                    (next_country,)
+                )
+                result = cursor.fetchall()
+            else:
+                result = []
+
             connection.close()
 
             if result:
