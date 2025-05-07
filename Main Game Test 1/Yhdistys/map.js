@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function (evt) {
 
     // start country to highlight
     const countriesToHighlight = ['Argentina'];  // Example country list
-
+    weatherUpdate(-34.603722, -58.381592)
     // Fetch and load the GeoJSON data for all countries
     fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json')
         .then(response => response.json())
@@ -76,8 +76,6 @@ document.addEventListener("DOMContentLoaded", function (evt) {
 
 function weatherUpdate(latitude,longitude) {
     api="524990caf48ba5a43ea93849d5964612"
-    latitude = 44.34
-    longitude= 10.99
     let info = "https://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+api+"&units=metric"
     console.log(info)
     fetch(info)
@@ -101,3 +99,8 @@ function showWeatherImage(data) {
     imageElement.src = imageUrl;
     imageElement.alt = data.weather[0].description;
 }}
+function updateLevel(data){
+    const level = data
+    const heading = document.getElementById("current-level")
+    heading.innerHTML = `Level: ${level+1}`
+}

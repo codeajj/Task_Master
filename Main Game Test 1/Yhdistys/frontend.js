@@ -40,9 +40,10 @@ document.addEventListener("DOMContentLoaded", (evt) => {
       weatherUpdate(data.response.latitude, data.response.longitude)
     }
 
-    if (data.response.currentLevel > lastLevel) {
+    if (data.response.currentLevel+1 > lastLevel) {
       lastLevel = data.response.currentLevel
       highlightCountryByName(data.response.country)
+      updateLevel(data.response.currentLevel)
     }
   } else {
     // It's a plain string response
