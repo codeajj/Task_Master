@@ -30,7 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function handle_response(data) { // Muutetaan vastaus terminaal.
-    if (data.response) {
+    if (typeof data.response === "object" && data.response.terminal) {
+      appendToTerminal(data.response)
+    }
+    else {
       appendToTerminal(data.response)
     }
   }
