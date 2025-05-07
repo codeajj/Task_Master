@@ -32,7 +32,12 @@ document.addEventListener("DOMContentLoaded", (evt) => {
 
   function handle_response(data) { // Muutetaan vastaus terminaal.
     if (data.response) {
-      appendToTerminal(data.response)
+      appendToTerminal(data.response.terminal)
+      weatherUpdate(data.response.latitude,data.response.longitude)
+      if (data.response.currentLevel > lastLevel){
+        lastLevel = data.response.currentLevel
+        highlightCountryByName(data.response.country)
+      }
     }
   }
 

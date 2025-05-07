@@ -73,6 +73,7 @@ class GameLogic:
         elif answer == "buenos aires":
             return "Correct!", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_0_1(self, answer):
@@ -81,6 +82,7 @@ class GameLogic:
         elif answer == "spanish":
             return "Correct!", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_0_2(self, answer):
@@ -89,6 +91,7 @@ class GameLogic:
         elif answer == "maybe":
             return "Correct! I think?", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_0_3(self, answer):
@@ -97,6 +100,7 @@ class GameLogic:
         elif answer == "peso":
             return "Correct!", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_0_4(self, answer):
@@ -105,6 +109,7 @@ class GameLogic:
         elif answer == "yes":
             return "Correct!", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_1_0(self, answer):
@@ -113,6 +118,7 @@ class GameLogic:
         elif answer == "uluru":
             return "Correct!", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_1_1(self, answer):
@@ -121,6 +127,7 @@ class GameLogic:
         elif answer == "sydney":
             return "Correct!", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_1_2(self, answer):
@@ -129,6 +136,7 @@ class GameLogic:
         elif answer == "b":
             return "Correct! I think?", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_1_3(self, answer):
@@ -137,6 +145,7 @@ class GameLogic:
         elif answer == "yes":
             return "Correct!", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
     def task_1_4(self, answer):
@@ -145,5 +154,365 @@ class GameLogic:
         elif answer == "yes":
             return "Correct!", True
         else:
+            self.player_status()
             return "Incorrect!", False
 
+    def task_2_0(self, answer):
+        if answer == "question":
+            return "Task 1: The Mongolian capital is known for being the ---- capital on Earth. (a. Coldest, b. Densest, c. Largest)", False
+        elif answer == "a":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_2_1(self, answer):
+        if answer == "question":
+            return "Task 2: Mongolia has the lowest population density in the world, how many people are there per square kilometer? (a. 4/km2, b. 2/km2, c. 12/km2)", False
+        elif answer == "b":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_2_2(self, answer):
+        if answer == "question":
+            return "Task 3: Mongolia is vast and empty, what desert covers nearly third of the country? (a. Sahara, b. Arctic, c. Gobi)", False
+        elif answer == "c":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_2_3(self, answer):
+        if answer == "question":
+            return "Task 4: Would you like to attend an archery competition? (yes/no)", False
+        elif answer == "yes":
+            return "jee", True
+        else:
+            self.player_status()
+            return "eteenpäin", False
+
+    def task_2_4(self, answer):
+        if answer == "question":
+            return "Task 5: Mongolians enjoy a beverage called Airag, what is it though? (a. Fermented horse milk, b. Fermented berries and water, c. Goat's milk)", False
+        elif answer == "a":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_3_0(self, answer):
+        if answer == "question":
+            return "Task 1: What happened at Tiananmen square in 1989? (nothing/a massacre)", False
+        elif answer == "nothing":
+            return "Correct! +social credits", True
+        else:
+            self.player_status()
+            return "Incorrect! Absolutely nothing happened", False
+
+    def task_3_1(self, answer):
+        if answer == "question":
+            return "Task 2: How long is the Great Wall of China? (a. ~21 000km, b. ~28 000km, c. ~5 000km)", False
+        elif answer == "a":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_3_2(self, answer):
+        if answer == "question":
+            return "Task 3: 您同意将您的左肾捐给我们吗？ (of course/rather not)", False
+        elif answer == "of course":
+            return "Wonderful! We'll come and remove your left kidney in about 3 to 4 business days", True
+        else:
+            self.player_status()
+            return "What a shame, we will find you anyway", False
+
+    def task_3_3(self, answer):
+        if answer == "question":
+            return "Task 4: Is Taiwan a part of China? (yes/no)", False
+        elif answer == "yes":
+            return "Correct! +social credits", True
+        else:
+            self.player_status()
+            return "KAAPPAUS TÄHÄN", False
+
+    def task_3_4(self, answer):
+        if answer == "question":
+            return "Task 5: HONK KONG CASINO TÄHÄN (hell yeah/hell no)", False
+        elif answer == "hell yeah":
+            return "KASINO", True
+        else:
+            self.player_status()
+            return "KASINO", False
+
+    def task_4_0(self, answer):
+        if answer == "question":
+            return "Task 1: KÄNNILÄISTAPPELU (fight/flee)", False
+        elif answer == "flee":
+            return "You have fled", True
+        else:
+            self.player_status()
+            return "Fight!", False
+
+    def task_4_1(self, answer):
+        if answer == "question":
+            return "Task 2: Was ist das Nationalgericht Deutschlands? (a. wiener schnitzel, b. sauerbraten, c. currywurst)", False
+        elif answer == "b":
+            return "Richtig!", True
+        else:
+            self.player_status()
+            return "Falsch!", False
+
+    def task_4_2(self, answer):
+        if answer == "question":
+            return "Task 3: AUTOBAHN HOMMELI (yes/no)", False
+        elif answer == "no":
+            return "Wunderbar", True
+        else:
+            self.player_status()
+            return "Wunderbar!", False
+
+    def task_4_3(self, answer):
+        if answer == "question":
+            return "Task 4: KALJANJUONTI KISA TÄHÄN", False
+        elif answer == "no":
+            return "eteenpäin!", True
+        else:
+            self.player_status()
+            return "jatka tehtävään!", False
+
+    def task_4_4(self, answer):
+        if answer == "question":
+            return "Task 5: Sollen wir Polen angreifen? (ja/nein)", False
+        elif answer == "ja":
+            return "Wunderbar!", True
+        else:
+            self.player_status()
+            return "Verlierer.", False
+
+    def task_5_0(self, answer):
+        if answer == "question":
+            return "Task 1: Is dziewięćsetdziewięćdziesięciodziewięcionarodowościowego a real word in the beautiful Polish language? (yes/no)", False
+        elif answer == "yes":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_5_1(self, answer):
+        if answer == "question":
+            return "Task 2: Was the original Fortnite battle royale map based off of Poland? (yes/no)", False
+        elif answer == "yes":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_5_2(self, answer):
+        if answer == "question":
+            return "Task 3: What would be a traditional Polish breakfast? (a. a cigarette, b. a cigarette with a shot of alcohol, c. a cigarette with a bottle of alcohol, d. a pack of cigarettes with a bottle of alcohol)", False
+        elif answer == "d":
+            return "Correct! Truly nutritious", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_5_3(self, answer):
+        if answer == "question":
+            return "Task 4: Wanna try Polmos Spirytus Rektyfikowany 96% vodka? (yes/no)", False
+        elif answer == "no":
+            return "Weak!", True
+        else:
+            self.player_status()
+            return "Yeah!", False
+
+    def task_5_4(self, answer):
+        if answer == "question":
+            return "Task 5: What is the sacred gift Poland has given this globe? (a. Toothpaste, b. Vodka, c. Paper clips) ", False
+        elif answer == "b":
+            return "Correct! Thank you Poland <3", True
+        else:
+            self.player_status()
+            return "That's a good one, but there is a way better one", False
+
+    def task_6_0(self, answer):
+        if answer == "question":
+            return "Task 1: Luxembourg is known for being a rather wealthy place, what's their GDP per capita? (a. ~140 000€, b. ~60 000€, c. 250 000€)", False
+        elif answer == "b":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_6_1(self, answer):
+        if answer == "question":
+            return "Task 2: The country is also known for being really small, how big are they then? (a. ~30 000km2, b. ~6 000km2, c. ~2 600km2)", False
+        elif answer == "c":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_6_2(self, answer):
+        if answer == "question":
+            return "Task 3: Luxembourg has a very generic flag with the colors red, white and blue. In what order do they go though? (from up to down)", False
+        elif answer == "red white blue" or answer == "red and white and blue" or answer == "red, white and blue":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_6_3(self, answer):
+        if answer == "question":
+            return "Task 4: For its size, Luxembourg has an extensive public transport network, what's the cost then? (a. It's cheap, b. It's expensive, c. It's free)", False
+        elif answer == "c":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_6_4(self, answer):
+        if answer == "question":
+            return "Task 5: Before you leave, would you like to go to a local coffee place? (yes/no)", False
+        elif answer == "no":
+            return "ETEENPÄIN", True
+        else:
+            self.player_status()
+            return "VELKAANNUIT", False
+
+    def task_7_0(self, answer):
+        if answer == "question":
+            return "Task 1: Norway's a very mountainous country, what's the highest peak of Norway called? (a. Oksskolten, b. Galdhøpiggen, c. Store Trolla)", False
+        elif answer == "b":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_7_1(self, answer):
+        if answer == "question":
+            return "Task 2: Norwegian is a beautiful north Germanic language, having roots to old Norse. Is it true that it has two different written forms? (yes/no)", False
+        elif answer == "yes":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_7_2(self, answer):
+        if answer == "question":
+            return "Task 3: Norway's coastline is often misunderstood, it's very long... But how long exactly? (a. 23 718km, b. 83 281km, c. 1 288km)", False
+        elif answer == "b":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_7_3(self, answer):
+        if answer == "question":
+            return "Task 4: Students in Norway celebrate 'Russfeiring', does it really last for a whole month? (yes/no)", False
+        elif answer == "yes":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_7_4(self, answer):
+        if answer == "question":
+            return "Task 5: Is the colonel-in-chief of the Norwegian King's Guard... a penguin? (yes/no)", False
+        elif answer == "yes":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_8_0(self, answer):
+        if answer == "question":
+            return "Task 1: Is BTS your favourite band? (yes/no)", False
+        elif answer == "yes":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Death sentence.", False
+
+    def task_8_1(self, answer):
+        if answer == "question":
+            return "Task 2: Which one of these is a world famous Korean food? (a. Tempura, b. Tunkatsu, c. Kimchi)", False
+        elif answer == "c":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_8_2(self, answer):
+        if answer == "question":
+            return "Task 3: Seoul is a city nearly right at the border with North Korea, how many people live inside the metropolitan area? (a. 15 000 000, b. 20 000 000, c. 25 000 000)", False
+        elif answer == "c":
+            return "Correct!", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
+
+    def task_8_3(self, answer):
+        if answer == "question":
+            return "Task 4: Are you a North Korean defector? (yes/no)", False
+        elif answer == "no":
+            return "All good then!", True
+        else:
+            self.player_status()
+            return "Sending you back immediately.", False
+
+    def task_8_4(self, answer):
+        if answer == "question":
+            return "Task 5: 리그 오브 레전드를 하시나요? (yes/no)", False
+        elif answer == "yes":
+            return "꼭 전문가에게 문의하세요!", True
+        else:
+            self.player_status()
+            return "아... 그럼 플레이를 시작해야 할 것 같아요", False
+
+    def task_9_0(self, answer):
+        if answer == "question":
+            return "Task 1: Everyone stand up for the pledge of allegiance! What's the 6th word of the verse? (a. Flag, b. I, c. America)", False
+        elif answer == "a":
+            return "You are correct, fellow patriot!", True
+        else:
+            self.player_status()
+            return "Wrong, deported!", False
+
+    def task_9_1(self, answer):
+        if answer == "question":
+            return "Task 2: They sure love their guns, maybe even more than they love their siblings, are there more civilian firearms owned than people themselves? (yes/no)", False
+        elif answer == "yes":
+            return "Hell yeah! ", True
+        else:
+            self.player_status()
+            return "What? You don't like guns, are you a LIBERAL SISSY??", False
+
+    def task_9_2(self, answer):
+        if answer == "question":
+            return "Task 3: When did the greatest country on Earth gain independence? (a. 1677, b. 1750, c. 1776)", False
+        elif answer == "c":
+            return "Hell yeah! Older than your mother", True
+        else:
+            self.player_status()
+            return "How do you not know this? It's the greatest country on Earth!", False
+
+    def task_9_3(self, answer):
+        if answer == "question":
+            return "Task 4: Do you believe in our lord and savior Donald Trump? (yes/yes)", False
+        elif answer == "yes":
+            return "Trump! Trump! Trump!", True
+        else:
+            self.player_status()
+            return "Incorrect, DEPORTED!", False
+
+    def task_9_4(self, answer):
+        if answer == "question":
+            return "Task 5: Start nuclear war with Russia? (yes/no)", False
+        elif answer == "yes":
+            return "", True
+        else:
+            self.player_status()
+            return "", False

@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function (evt) {
     evt.preventDefault()
-    // Initialize map
     const map = L.map('map').setView([20, 0], 2);  // Center the map on the world view
 
-    // Add OpenStreetMap tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     }).addTo(map);
 
@@ -11,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function (evt) {
 
     let geojsonLayer;
 
-    // List of countries to highlight initially
+    // start country to highlight
     const countriesToHighlight = ['Argentina'];  // Example country list
 
     // Fetch and load the GeoJSON data for all countries
@@ -36,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function (evt) {
         });
 
     // Function to highlight a country
-    function highlightCountry(layer, feature) {
+    function highlightCountry(layer) {
         layer.setStyle({
             color: '#ffd52c',        // Outline color
             weight: 3,               // Outline thickness
@@ -49,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function (evt) {
 
         // Smoothly pan and zoom to the country
         map.flyToBounds(bounds, {
-            duration: 2,  // Duration of the animation (in seconds)
+            duration: 0,  // Duration of the animation (in seconds)
             maxZoom: 5    // Optional: specify a max zoom level
         });
     }
@@ -75,33 +73,40 @@ document.addEventListener("DOMContentLoaded", function (evt) {
         });
     };
 });
-city="Trelew"
-api="524990caf48ba5a43ea93849d5964612"
 
-let info = "https://api.openweathermap.org/data/2.5/weather?q="+city+"&appid="+api+"&units=metric"
-console.log(info)
-fetch(info)
-    .then(r => r.json())
-    .then (data => {console.log(data);
-    showWeather(data)
-    showWeatherImage(data)
-    })
-function showWeather(data){
-    const description = data.weather[0].description
-    const temperature = data.main.temp
-    const descriptionDiv = document.getElementById("weather-here")
-    const heading = document.createElement("h6")
-    heading.innerHTML = description +" "+temperature+"°C"
-    descriptionDiv.appendChild(heading)
+function weatherUpdate(latitude,longitude) {
+    api="524990caf48ba5a43ea93849d5964612"
+    latitude = 44.34
+    longitude= 10.99
+    let info = "https://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+api
+    console.log(info)
+    fetch(info)
+        .then(r => r.json())
+        .then(data => {
+            console.log(data);
+            showWeather(data)
+            showWeatherImage(data)
+        })
+
+    function showWeather(data) {
+        const description = data.weather[0].description
+        const temperature = data.main.temp
+        const descriptionDiv = document.getElementById("weather-here")
+        const heading = document.createElement("h6")
+        heading.innerHTML = description + " " + temperature + "°C"
+        descriptionDiv.appendChild(heading)
+    }
+
+    function showWeatherImage(data) {
+        let search = "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png"
+        fetch(search)
+            .then(r => r.blob())
+            .then((blob) => {
+                const imageUrl = URL.createObjectURL(blob)
+                const imageElement = document.createElement("img")
+                imageElement.src = imageUrl;
+                const container = document.getElementById("image-container")
+                container.appendChild(imageElement)
+            })
+    }
 }
-function showWeatherImage(data){
-    let search = "https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png"
-    fetch(search)
-        .then (r => r.blob())
-        .then ((blob)=> {
-            const imageUrl = URL.createObjectURL(blob)
-            const imageElement = document.createElement("img")
-            imageElement.src = imageUrl;
-            const container = document.getElementById("image-container")
-            container.appendChild(imageElement)
-        })}
