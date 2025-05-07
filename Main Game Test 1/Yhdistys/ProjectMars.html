@@ -17,13 +17,15 @@
 <body>
     <header class="retro-container-header old-crt-monitor">Task Master</header>
     <div class="retro-container old-crt-monitor">
-        <div id="terminal">terminal
+        <div id="terminal">
             <!-- Kaikki maat saat highlitetyksi tällä highlightCountryByName funktiolla -->
-            <!--<button onclick="highlightCountryByName('France')">Highlight France</button> -->
+            <button onclick="highlightCountryByName('France')">Highlight France</button>
         </div>
         <form id="input-form">
             <input id="input" type="text" placeholder=">">
             <input type="submit" value="Submit">
+            <button id="task">Task</button>
+            <button id="next-level">Next-level</button>
         </form>
 
 
@@ -40,7 +42,6 @@
         <div class="info">info
             <div class="time"><h6>time</h6></div>
             <div class="hp"><h6>hp</h6></div>
-
         </div>
     </div>
  <!-- Make sure you put this AFTER Leaflet's CSS -->
