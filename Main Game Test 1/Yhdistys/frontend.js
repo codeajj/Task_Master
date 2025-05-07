@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", (evt) => {
   const form = document.getElementById("input-form")
   const input = document.getElementById("input")
   const terminal = document.getElementById("terminal")
-
+  let lastLevel =0
   form.addEventListener("submit", async (event) => {
     event.preventDefault()
     const user_input = input.value.trim()
@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", (evt) => {
       return { response: "Error: Couldn't connect to server." }
     }
   }
-
   function handle_response(data) {
   if (!data.response) return
 
