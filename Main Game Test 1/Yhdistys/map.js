@@ -78,7 +78,7 @@ function weatherUpdate(latitude,longitude) {
     api="524990caf48ba5a43ea93849d5964612"
     latitude = 44.34
     longitude= 10.99
-    let info = "https://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+api
+    let info = "https://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+api+"&units=metric"
     console.log(info)
     fetch(info)
         .then(r => r.json())
@@ -88,25 +88,16 @@ function weatherUpdate(latitude,longitude) {
             showWeatherImage(data)
         })
 
-    function showWeather(data) {
-        const description = data.weather[0].description
-        const temperature = data.main.temp
-        const descriptionDiv = document.getElementById("weather-here")
-        const heading = document.createElement("h6")
-        heading.innerHTML = description + " " + temperature + "°C"
-        descriptionDiv.appendChild(heading)
-    }
+function showWeather(data) {
+    const description = data.weather[0].description;
+    const temperature = data.main.temp;
+    const heading = document.getElementById("weather-text");
 
-    function showWeatherImage(data) {
-        let search = "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png"
-        fetch(search)
-            .then(r => r.blob())
-            .then((blob) => {
-                const imageUrl = URL.createObjectURL(blob)
-                const imageElement = document.createElement("img")
-                imageElement.src = imageUrl;
-                const container = document.getElementById("image-container")
-                container.appendChild(imageElement)
-            })
-    }
+    heading.innerHTML = `${description} ${temperature}°C`;
 }
+function showWeatherImage(data) {
+    const imageUrl = "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png";
+    const imageElement = document.getElementById("weather-image");
+    imageElement.src = imageUrl;
+    imageElement.alt = data.weather[0].description;
+}}

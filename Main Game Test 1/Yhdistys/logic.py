@@ -1,21 +1,29 @@
+import mysql.connector
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="user",
+        password="test",
+        database="project_mars"
+    )
+
 class GameLogic:
     def __init__(self):
-        self.hp = 3
-        self.level = 0
-        self.tasks_done = 0 #Tarkastetaan onko min. tehty (5)
-        self.current_task = None
-        self.task_index = { #Maat
+        self.game_state = True
+        self.hp = 3; self.coins = 0; self.tries = 3 #Player status
+        self.level = 0; self.tasks_done = 0; self.current_task = None #Task status
+        self.task_index = { #Countries
             0: [self.task_0_0, self.task_0_1, self.task_0_2, self.task_0_3, self.task_0_4], #Argentina
             1: [self.task_1_0, self.task_1_1, self.task_1_2, self.task_1_3, self.task_1_4], #Australia
-            #2: [self.task_2_0, self.task_2_1, self.task_2_2, self.task_2_3, self.task_2_4], #Mongolia
-            #3: [self.task_3_0, self.task_3_1, self.task_3_2, self.task_3_3, self.task_3_4], #China
-            #4: [self.task_4_0, self.task_4_1, self.task_4_2, self.task_4_3, self.task_4_4], #Germany
-            #5: [self.task_5_0, self.task_5_1, self.task_5_2, self.task_5_3, self.task_5_4], #Poland
-            #6: [self.task_6_0, self.task_6_1, self.task_6_2, self.task_6_3, self.task_6_4], #Luxemburg
-            #7: [self.task_7_0, self.task_7_1, self.task_7_2, self.task_7_3, self.task_7_4], #Norway
-            #8: [self.task_8_0, self.task_8_1, self.task_8_2, self.task_8_3, self.task_8_4], #South Korea
-            #9: [self.task_9_0, self.task_9_1, self.task_9_2, self.task_9_3, self.task_9_4], #America
-
+            2: [self.task_2_0, self.task_2_1, self.task_2_2, self.task_2_3, self.task_2_4], #Mongolia
+            3: [self.task_3_0, self.task_3_1, self.task_3_2, self.task_3_3, self.task_3_4], #China
+            4: [self.task_4_0, self.task_4_1, self.task_4_2, self.task_4_3, self.task_4_4], #Germany
+            5: [self.task_5_0, self.task_5_1, self.task_5_2, self.task_5_3, self.task_5_4], #Poland
+            6: [self.task_6_0, self.task_6_1, self.task_6_2, self.task_6_3, self.task_6_4], #Luxemburg
+            7: [self.task_7_0, self.task_7_1, self.task_7_2, self.task_7_3, self.task_7_4], #Norway
+            8: [self.task_8_0, self.task_8_1, self.task_8_2, self.task_8_3, self.task_8_4], #South Korea
+            9: [self.task_9_0, self.task_9_1, self.task_9_2, self.task_9_3, self.task_9_4], #America
 
         }
     def process_input(self, user_input): #Otetaan input, tarkastetaan mitä kirjoitettu.
@@ -29,25 +37,77 @@ class GameLogic:
         #Next level kutsu
         elif user_input == "next level":
             return self.next_level()
+        #HP ja yritykset tieto
+        elif user_input == "status":
+            return self.status()
+        elif user_input == "store":
+            return "Moro"
         else:
             return self.handle_task_answer(user_input)
+
+
+    def status(self): #Pelaaja kutsuu oman statuksen
+        return f"HP: {self.hp}, Tries: {self.tries}"
+
+    def player_status(self): #Tarkastetaan yritys määrä, ja pitää ottaa hp
+        if self.current_task is not None:
+            self.tries -= 1
+            if self.tries <= 0:
+                self.hp -= 1
 
     def next_task(self): #Tehtyjen tarkastus
         if self.tasks_done == 5:
             return "All tasks completed. Proceed to the next level."
         task = self.task_index[self.level][self.tasks_done]
         self.current_task = task
-        message, _ =task("question")
+        message, _ =task("question") # ---> Important! <---  # Antaa vaa pycharmin märistä tästä, sulut on pakolliset että toimii! "peukku emoji"
         return message
 
     def next_level(self): #Seuraavaan siirtyminen
         if self.tasks_done < 5:
-            return "No dumbass!"
+            return {"temrinal": "No dumbass!"}
         else:
             self.level +=1
             self.tasks_done = 0
             self.hp += 1
-            return f"Level {self.level + 1}! You've gained 1 HP!"
+
+            connection = get_db_connection()
+            cursor = connection.cursor()
+
+            country_order = [
+                'Australia',
+                'Mongolia',
+                'China',
+                'Germany',
+                'Poland',
+                'Luxemburg',
+                'Norway',
+                'South Korea',
+                'America'
+            ]
+
+            if self.level - 1 < len(country_order):
+                next_country = country_order[self.level - 1]
+                cursor.execute(
+                    "SELECT name FROM country WHERE name = %s",
+                    (next_country,)
+                )
+                result = cursor.fetchall()
+            else:
+                result = []
+
+            connection.close()
+
+            if result:
+                country = result[0][0]
+            else:
+                country = "N/A"
+
+            return {
+                "terminal": f"Level {self.level + 1}! You've gained 1 HP!",
+                "currentLevel": self.level,
+                "country": country
+            }
 
     def handle_task_answer(self, answer): #Inputin vastaan otto, käsittely.
         if self.current_task is None:
@@ -61,7 +121,9 @@ class GameLogic:
             is_correct = message.strip().lower() == "Correct!"
 
         if is_correct:
+            self.coins += 1
             self.tasks_done += 1
+            self.tries = 3
             self.current_task = None
         return message
 

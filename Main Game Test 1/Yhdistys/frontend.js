@@ -30,16 +30,27 @@ document.addEventListener("DOMContentLoaded", (evt) => {
     }
   }
 
-  function handle_response(data) { // Muutetaan vastaus terminaal.
-    if (data.response) {
-      appendToTerminal(data.response.terminal)
-      weatherUpdate(data.response.latitude,data.response.longitude)
-      if (data.response.currentLevel > lastLevel){
-        lastLevel = data.response.currentLevel
-        highlightCountryByName(data.response.country)
-      }
+  function handle_response(data) {
+  if (!data.response) return
+
+  // If it's an object with 'terminal'
+  if (typeof data.response === "object" && data.response.terminal) {
+    appendToTerminal(data.response.terminal)
+
+    if (data.response.latitude && data.response.longitude) {
+      weatherUpdate(data.response.latitude, data.response.longitude)
     }
+
+    if (data.response.currentLevel > lastLevel) {
+      lastLevel = data.response.currentLevel
+      highlightCountryByName(data.response.country)
+    }
+  } else {
+    // It's a plain string response
+    appendToTerminal(data.response)
   }
+}
+
 
   function appendToTerminal(text) { // Ei tyhjän inputin lisäys terminaaliin + scroll
     terminal.innerHTML += `<div>${text}</div>`
