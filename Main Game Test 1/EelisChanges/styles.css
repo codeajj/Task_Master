@@ -37,7 +37,7 @@ div.retro-container {
 
 }
 
-#single {
+#input-form {
     position: absolute;
     bottom: 20px;
     left: 50%;
@@ -47,8 +47,8 @@ div.retro-container {
     justify-content: center;
     gap: 2rem;
 }
-#single input[type="text"],
-#single input[type="submit"] {
+#input-form input[type="text"],
+#input-form input[type="submit"] {
     background-color: rgb(0,0,0);
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
@@ -59,7 +59,7 @@ div.retro-container {
     font-size: 0.5rem;
 }
 
-#single input[type="submit"]:hover {
+#input-form input[type="submit"]:hover {
     background-color: var(--secondary-color);
     color: black;
     cursor: pointer;
