@@ -1,12 +1,20 @@
+import mysql.connector
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="user",
+        password="test",
+        database="project_mars"
+    )
+
 class GameLogic:
     def __init__(self):
-        self.hp = 3
-        self.coins = 0
-        self.tries = 3
-        self.level = 0
-        self.tasks_done = 0 #Tarkastetaan onko min. tehty (5)
-        self.current_task = None
-        self.task_index = { #Maat
+        self.cancer = "None"
+        self.game_state = True
+        self.hp = 3; self.coins = 0; self.tries = 3 #Player status
+        self.level = 0; self.tasks_done = 0; self.current_task = None #Task status
+        self.task_index = { #Countries
             0: [self.task_0_0, self.task_0_1, self.task_0_2, self.task_0_3, self.task_0_4], #Argentina
             1: [self.task_1_0, self.task_1_1, self.task_1_2, self.task_1_3, self.task_1_4], #Australia
             2: [self.task_2_0, self.task_2_1, self.task_2_2, self.task_2_3, self.task_2_4], #Mongolia
@@ -33,6 +41,8 @@ class GameLogic:
         #HP ja yritykset tieto
         elif user_input == "status":
             return self.status()
+        elif user_input == "store":
+            return "Moro"
         else:
             return self.handle_task_answer(user_input)
 
@@ -51,17 +61,33 @@ class GameLogic:
             return "All tasks completed. Proceed to the next level."
         task = self.task_index[self.level][self.tasks_done]
         self.current_task = task
-        message, _ =task("question")
+        message, _ =task("question") # ---> Important! <---  # Antaa vaa pycharmin märistä tästä, sulut on pakolliset että toimii! "peukku emoji"
         return message
 
     def next_level(self): #Seuraavaan siirtyminen
         if self.tasks_done < 5:
-            return "No dumbass!"
+            return {"temrinal": "No dumbass!"}
         else:
             self.level +=1
             self.tasks_done = 0
             self.hp += 1
-            return f"Level {self.level + 1}! You've gained 1 HP!"
+
+            connection = get_db_connection()
+            cursor = connection.cursor()
+            cursor.execute("")
+            result = cursor.fetchall()
+            connection.close()
+
+            if result:
+                country = result[0][0]
+            else:
+                country = "N/A"
+
+            return {
+                "terminal": f"Level {self.level + 1}! You've gained 1 HP!",
+                "currentLevel": self.level,
+                "country": country
+            }
 
     def handle_task_answer(self, answer): #Inputin vastaan otto, käsittely.
         if self.current_task is None:
@@ -75,6 +101,7 @@ class GameLogic:
             is_correct = message.strip().lower() == "Correct!"
 
         if is_correct:
+            self.coins += 1
             self.tasks_done += 1
             self.tries = 3
             self.current_task = None
