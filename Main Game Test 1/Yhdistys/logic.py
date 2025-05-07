@@ -40,14 +40,21 @@ class GameLogic:
         #HP ja yritykset tieto
         elif user_input == "status":
             return self.status()
-        elif user_input == "store":
-            return "Moro"
+        #Ostetaan HP
+        elif user_input == "buy hp":
+            if self.coins >= 3:
+                self.coins -= 3
+                self.hp += 1
+                return f"You have bought 1 HP with 3 coins. {self.coins} coins left."
+            else:
+                return "You do not have enough coins to buy HP."
+
         else:
             return self.handle_task_answer(user_input)
 
 
     def status(self): #Pelaaja kutsuu oman statuksen
-        return f"HP: {self.hp}, Tries: {self.tries}"
+        return f"HP: {self.hp}, Tries: {self.tries}, Coins: {self.coins}"
 
     def player_status(self): #Tarkastetaan yritys määrä, ja pitää ottaa hp
         if self.current_task is not None:
