@@ -116,7 +116,7 @@ class GameLogic:
 
     def next_level(self): #Seuraavaan siirtyminen
         if self.tasks_done < 5:
-            return {"temrinal": "No dumbass!"}
+            return {"terminal": "No dumbass!"}
         else:
             self.level +=1
             self.tasks_done = 0

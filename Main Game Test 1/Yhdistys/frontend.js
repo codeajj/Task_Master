@@ -1,22 +1,36 @@
 document.addEventListener("DOMContentLoaded", (evt) => {
   evt.preventDefault()
+
   const form = document.getElementById("input-form")
   const input = document.getElementById("input")
   const terminal = document.getElementById("terminal")
-  let lastLevel =0
+  const taskButton = document.getElementById("task") // Get the button element
+  const nextLevelButton = document.getElementById("next-level");
+  let lastLevel = 0
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault()
     const user_input = input.value.trim()
     if (!user_input) return
 
     appendToTerminal(`> ${user_input}`)
-    input.value = ""; // jos input tyhjä ei tehdä mitään
+    input.value = "" // Reset input field
 
-    const response = await send_input(user_input) // Vastauksen odotus
+    const response = await send_input(user_input) // Wait for API response
     handle_response(response)
   })
 
-  async function send_input(text) { // Koko pää skeida jolla nyt tehdää API call ja saadaan tieto revittyy.
+  // Listen for "Next Task" button click
+  taskButton.addEventListener("click", async () => {
+    const response = await send_input("task") // Send the request for the next task
+    handle_response(response)
+  })
+  nextLevelButton.addEventListener("click", async () => {
+    const response = await send_input("next level") // Send the "next level" request
+    handle_response(response)
+  })
+
+  async function send_input(text) {
     try {
       const response = await fetch("http://localhost:5000/game", {
         method: "POST",
@@ -29,30 +43,30 @@ document.addEventListener("DOMContentLoaded", (evt) => {
       return { response: "Error: Couldn't connect to server." }
     }
   }
+
   function handle_response(data) {
-  if (!data.response) return
+    if (!data.response) return
 
-  // If it's an object with 'terminal'
-  if (typeof data.response === "object" && data.response.terminal) {
-    appendToTerminal(data.response.terminal)
+    // If the response has terminal info
+    if (typeof data.response === "object" && data.response.terminal) {
+      appendToTerminal(data.response.terminal)
 
-    if (data.response.latitude && data.response.longitude) {
-      weatherUpdate(data.response.latitude, data.response.longitude)
+      if (data.response.latitude && data.response.longitude) {
+        weatherUpdate(data.response.latitude, data.response.longitude)
+      }
+
+      if (data.response.currentLevel + 1 > lastLevel) {
+        lastLevel = data.response.currentLevel
+        highlightCountryByName(data.response.country)
+        updateLevel(data.response.currentLevel)
+      }
+    } else {
+      // If it's a plain string response
+      appendToTerminal(data.response)
     }
-
-    if (data.response.currentLevel+1 > lastLevel) {
-      lastLevel = data.response.currentLevel
-      highlightCountryByName(data.response.country)
-      updateLevel(data.response.currentLevel)
-    }
-  } else {
-    // It's a plain string response
-    appendToTerminal(data.response)
   }
-}
 
-
-  function appendToTerminal(text) { // Ei tyhjän inputin lisäys terminaaliin + scroll
+  function appendToTerminal(text) {
     terminal.innerHTML += `<div>${text}</div>`
     terminal.scrollTop = terminal.scrollHeight
   }
