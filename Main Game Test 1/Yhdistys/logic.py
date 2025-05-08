@@ -73,27 +73,79 @@ class GameLogic:
         connection = get_db_connection()
         cursor = connection.cursor()
 
-        country_order = [
-            'Australia',
-            'Mongolia',
-            'China',
-            'Germany',
-            'Poland',
-            'Luxemburg',
-            'Norway',
-            'South Korea',
-            'America'
+        airport_order = [
+            # Argentina
+            "Comodoro Pierrestegui Airport",
+            "General Urquiza Airport",
+            "La Cumbre Airport",
+            "Presidente Néstor Kirchner Regional Airport",
+
+            # Australia
+            "Bedourie Airport",
+            "Benalla Airport",
+            "Boonah Airport",
+            "Bowen Airport",
+            "Sydney Airport",
+
+            # Mongolia
+            "Mörön Airport",
+            "Tsetserleg Airport",
+            "Buyant-Ukhaa International Airport",
+            "Ulaangom Airport",
+            "Ulaanbaatar Chinggis Khaan International",
+
+            # China
+            "Changzhi Airport",
+            "Luoding Sulong Airport",
+            "Golog Maqin Airport",
+            "Beijing Daxing International Airport",
+
+            # Germany
+            "Altenburg-Nobitz Airport",
+            "Magdeburg 'City' Airport",
+            "Pinnow Airport",
+            "Flugplatz Saarmund",
+            "Frankfurt am Main Airport",
+
+            # Poland
+            "Bielsko Biala Airport",
+            "Cewice Air Base",
+            "Elblag Airport",
+            "Katowice International Airport",
+            "Warsaw Chopin Airport",
+
+            # Luxembourg
+            "Luxembourg Airport",
+            "Noertrange Airfield",
+            "Useldange Glider Field",
+
+            # Norway
+            "Ålesund Airport, Vigra",
+            "Sogndal Airport",
+            "Sandane Airport, Anda",
+            "Vardø Airport, Svartnes",
+            "Oslo Airport, Gardermoen",
+
+            # South Korea
+            "Yangyang International Airport",
+            "Taean Airport",
+            "Uljin Airport",
+            "Cheongju International Airport/Cheongju",
+            "Incheon International Airport",
+
+            # America
+            "Bryce Canyon Airport",
+            "Eagle County Regional Airport",
+            "Willow Airport",
+            "Larsen Bay Airport",
+            "John F Kennedy International Airport"
         ]
 
-        if self.level < len(country_order):
-            country = country_order[self.level]
+        if self.level < len(airport_order):
+            airport = airport_order[self.level]
             cursor.execute("""
-                           SELECT latitude_deg, longitude_deg
-                           FROM airport
-                           WHERE iso_country = (SELECT code
-                                                FROM country
-                                                WHERE name = %s) LIMIT 1
-                           """, (country,))
+                           SELECT latitude_deg, longitude_deg FROM airport WHERE airport.name = %s
+                           """, (airport,))
             result = cursor.fetchone()
         else:
             result = None
@@ -106,11 +158,9 @@ class GameLogic:
             latitude, longitude = None, None
 
         return {
-                "response": {
                 "terminal": message,
                 "latitude": latitude,
                 "longitude": longitude
-            }
         }
 
 
