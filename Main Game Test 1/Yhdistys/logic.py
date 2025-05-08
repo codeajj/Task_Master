@@ -74,81 +74,35 @@ class GameLogic:
         cursor = connection.cursor()
 
         airport_order = [
-            # Argentina
-            "Comodoro Pierrestegui Airport",
-            "General Urquiza Airport",
-            "La Cumbre Airport",
+            "Comodoro Pierrestegui Airport", "General Urquiza Airport", "La Cumbre Airport",
             "Presidente Néstor Kirchner Regional Airport",
-
-            # Australia
-            "Bedourie Airport",
-            "Benalla Airport",
-            "Boonah Airport",
-            "Bowen Airport",
-            "Sydney Airport",
-
-            # Mongolia
-            "Mörön Airport",
-            "Tsetserleg Airport",
-            "Buyant-Ukhaa International Airport",
-            "Ulaangom Airport",
+            "Bedourie Airport", "Benalla Airport", "Boonah Airport", "Bowen Airport", "Sydney Airport",
+            "Mörön Airport", "Tsetserleg Airport", "Buyant-Ukhaa International Airport", "Ulaangom Airport",
             "Ulaanbaatar Chinggis Khaan International",
-
-            # China
-            "Changzhi Airport",
-            "Luoding Sulong Airport",
-            "Golog Maqin Airport",
-            "Beijing Daxing International Airport",
-
-            # Germany
-            "Altenburg-Nobitz Airport",
-            "Magdeburg 'City' Airport",
-            "Pinnow Airport",
-            "Flugplatz Saarmund",
+            "Changzhi Airport", "Luoding Sulong Airport", "Golog Maqin Airport", "Beijing Daxing International Airport",
+            "Altenburg-Nobitz Airport", "Magdeburg 'City' Airport", "Pinnow Airport", "Flugplatz Saarmund",
             "Frankfurt am Main Airport",
-
-            # Poland
-            "Bielsko Biala Airport",
-            "Cewice Air Base",
-            "Elblag Airport",
-            "Katowice International Airport",
+            "Bielsko Biala Airport", "Cewice Air Base", "Elblag Airport", "Katowice International Airport",
             "Warsaw Chopin Airport",
-
-            # Luxembourg
-            "Luxembourg Airport",
-            "Noertrange Airfield",
-            "Useldange Glider Field",
-
-            # Norway
-            "Ålesund Airport, Vigra",
-            "Sogndal Airport",
-            "Sandane Airport, Anda",
-            "Vardø Airport, Svartnes",
+            "Luxembourg Airport", "Noertrange Airfield", "Useldange Glider Field",
+            "Ålesund Airport, Vigra", "Sogndal Airport", "Sandane Airport, Anda", "Vardø Airport, Svartnes",
             "Oslo Airport, Gardermoen",
-
-            # South Korea
-            "Yangyang International Airport",
-            "Taean Airport",
-            "Uljin Airport",
-            "Cheongju International Airport/Cheongju",
-            "Incheon International Airport",
-
-            # America
-            "Bryce Canyon Airport",
-            "Eagle County Regional Airport",
-            "Willow Airport",
-            "Larsen Bay Airport",
+            "Yangyang International Airport", "Taean Airport", "Uljin Airport",
+            "Cheongju International Airport/Cheongju", "Incheon International Airport",
+            "Bryce Canyon Airport", "Eagle County Regional Airport", "Willow Airport", "Larsen Bay Airport",
             "John F Kennedy International Airport"
         ]
 
-        if self.level < len(airport_order):
-            airport = airport_order[self.level]
-            cursor.execute("""
-                           SELECT latitude_deg, longitude_deg FROM airport WHERE airport.name = %s
-                           """, (airport,))
-            result = cursor.fetchone()
-        else:
-            result = None
+        # Select airport based on the task index (task_done keeps track of the task sequence)
+        airport_index = self.level * 5 + self.tasks_done
+        airport = airport_order[airport_index % len(airport_order)]  # Cycling through the list
+
+        cursor.execute("""
+                       SELECT latitude_deg, longitude_deg
+                       FROM airport
+                       WHERE airport.name = %s
+                       """, (airport,))
+        result = cursor.fetchone()
 
         connection.close()
 
@@ -158,9 +112,9 @@ class GameLogic:
             latitude, longitude = None, None
 
         return {
-                "terminal": message,
-                "latitude": latitude,
-                "longitude": longitude
+            "terminal": message,
+            "latitude": latitude,
+            "longitude": longitude
         }
 
 
