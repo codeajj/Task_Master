@@ -7,6 +7,15 @@ document.addEventListener("DOMContentLoaded", (evt) => {
   const taskButton = document.getElementById("task") // Get the button element
   const nextLevelButton = document.getElementById("next-level");
   let lastLevel = 0
+  appendToTerminal("How to play:")
+  appendToTerminal("Type 'task' or press button for task")
+  appendToTerminal("You have 3 tries to answer correcty before losing hp")
+  appendToTerminal("For answering question correctly you get coins")
+  appendToTerminal("For answering question wrong something bad happens")
+  appendToTerminal("After 5 tasks proceed to the next level by typing 'next level' or pressing button")
+  appendToTerminal("To show stats type 'status'")
+  appendToTerminal("To buy more hp type 'buy hp' (costs 3 coins)")
+  appendToTerminal("If you forgor how to play, type '?' or 'help'")
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault()
@@ -40,7 +49,7 @@ document.addEventListener("DOMContentLoaded", (evt) => {
       const data = await response.json()
       return data
     } catch (error) {
-      return {response: "Error: Couldn't connect to server."}
+      return {response: "To start the game, run api"}
     }
   }
 
@@ -91,3 +100,16 @@ document.addEventListener("DOMContentLoaded", (evt) => {
   setInterval(updateClock, 1000);
   updateClock();
 })
+document.getElementById("start-btn").addEventListener("click", () => {
+    fetch("http://localhost:5000/start", { method: "POST" })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error("Error:", error));
+});
+
+document.getElementById("stop-btn").addEventListener("click", () => {
+    fetch("http://localhost:5000/stop", { method: "POST" })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error("Error:", error));
+});
