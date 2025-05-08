@@ -64,11 +64,55 @@ class GameLogic:
 
     def next_task(self): #Tehtyjen tarkastus
         if self.tasks_done == 5:
-            return "All tasks completed. Proceed to the next level."
+            return {"response": "All tasks completed. Proceed to the next level."}
+
         task = self.task_index[self.level][self.tasks_done]
         self.current_task = task
-        message, _ =task("question") # ---> Important! <---  # Antaa vaa pycharmin märistä tästä, sulut on pakolliset että toimii! "peukku emoji"
-        return message
+        message, _ = task("question")
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        country_order = [
+            'Australia',
+            'Mongolia',
+            'China',
+            'Germany',
+            'Poland',
+            'Luxemburg',
+            'Norway',
+            'South Korea',
+            'America'
+        ]
+
+        if self.level < len(country_order):
+            country = country_order[self.level]
+            cursor.execute("""
+                           SELECT latitude_deg, longitude_deg
+                           FROM airport
+                           WHERE iso_country = (SELECT code
+                                                FROM country
+                                                WHERE name = %s) LIMIT 1
+                           """, (country,))
+            result = cursor.fetchone()
+        else:
+            result = None
+
+        connection.close()
+
+        if result:
+            latitude, longitude = result
+        else:
+            latitude, longitude = None, None
+
+        return {
+                "response": {
+                "terminal": message,
+                "latitude": latitude,
+                "longitude": longitude
+            }
+        }
+
 
     def next_level(self): #Seuraavaan siirtyminen
         if self.tasks_done < 5:
