@@ -350,7 +350,7 @@ class GameLogic:
 
     def task_1_3(self, answer):
         if answer == "question":
-            return "Task 4: A kangaroo insulted your mother, punch him? a) Yes b) No", False #TODO listaus
+            return "<div><strong>Task 4: A kangaroo insulted your mother, punch him?</strong><ul><li>a) Yes</li><li>b) No</li></ul></div>", False #TODO tehtävä itsessään
         elif answer == "a":
             return "Correct! + 1 coin", True
         else:
@@ -479,7 +479,7 @@ class GameLogic:
         answer = answer.strip().lower()
 
         if answer == "question":
-            return "Task 5: Welcome to Hong Kong Casino! You totally should play to slot machine! a) Yes b) No", False #TODO listaus
+            return "<div><strong>Task 5: Welcome to Hong Kong Casino! You totally should play to slot machine!</strong><ul><li>a) Yes!</li><li>b) No</li></ul></div>", False
 
         if casino_game_state["active"]:
             if casino_game_state["spins_left"] <= 0:
