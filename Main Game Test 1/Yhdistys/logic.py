@@ -72,6 +72,8 @@ class GameLogic:
                 return "You must complete the task."
             else:
                 return self.next_task()
+        elif user_input == "debug_9": #DEBUG
+            self.level = 9
         #Next level kutsu
         elif user_input == "next level":
             return self.next_level()
@@ -304,7 +306,7 @@ class GameLogic:
     def task_0_3(self, answer):
         if answer == "question":
             return "<div><strong>Task 4: What is the currency of Argentina?</strong><ul><li>a) Euro</li><li>b) Peso</li><li>c) Dollar</li><li>d) Brazilian dollar</li></ul></div>", False
-        elif answer == "peso":
+        elif answer == "b":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -348,8 +350,8 @@ class GameLogic:
 
     def task_1_3(self, answer):
         if answer == "question":
-            return "Task 4: A kangaroo insulted your mother, punch him?", False #TODO
-        elif answer == "yes":
+            return "Task 4: A kangaroo insulted your mother, punch him? a) Yes b) No", False #TODO listaus
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -357,8 +359,8 @@ class GameLogic:
 
     def task_1_4(self, answer):
         if answer == "question":
-            return "Task 5: Go surfing?", False #TODO
-        elif answer == "yes":
+            return "Task 5: Go surfing? a) Yes b) No", False #TODO koko juttu
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -466,7 +468,7 @@ class GameLogic:
     def task_3_3(self, answer):
         if answer == "question":
             return "<div><strong>Task 4: Is Taiwan a part of China?</strong><ul><li>a) Yes!</li><li>b) No? What?</li></ul></div>", False
-        elif answer == "yes":
+        elif answer == "a":
             return "Correct! + social credits", True
         else:
             self.player_status()
@@ -477,7 +479,7 @@ class GameLogic:
         answer = answer.strip().lower()
 
         if answer == "question":
-            return "Task 5: Welcome to Hong Kong Casino! You totally should play to slot machine! [Y/N]", False
+            return "Task 5: Welcome to Hong Kong Casino! You totally should play to slot machine! a) Yes b) No", False #TODO listaus
 
         if casino_game_state["active"]:
             if casino_game_state["spins_left"] <= 0:
@@ -501,7 +503,7 @@ class GameLogic:
             else:
                 return "Type 'spin' to start gambling!", False
 
-        elif answer == "y":
+        elif answer == "a":
             casino_game_state["active"] = True
             casino_game_state["spins_left"] = 3
             return "Type 'spin' to start gambling. You have 3 spins.", False
@@ -538,7 +540,7 @@ class GameLogic:
 
     def task_4_2(self, answer):
         if answer == "question":
-            return "Task 3: AUTOBAHN HOMMELI (yes/no)", False #TODO
+            return "Task 3: AUTOBAHN HOMMELI (yes/no)", False #TODO koko juttu vaikka 30% et ajaa kolarin
         elif answer == "no":
             return "Wunderbar", True
         else:
@@ -549,13 +551,13 @@ class GameLogic:
         answer = answer.strip().lower()
 
         if answer == "question":
-            return "Task 4: A local challenges you to a beer drinking competition. Do you accept? (yes/no)", False
+            return "<div><strong>Task 4: A local challenges you to a beer drinking competition. Do you accept?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
 
-        if answer == "no":
+        if answer == "b":
             self.coins -= 5
-            return "Alright, moving on but the drunk stole 5 coins from you!", True
+            return "As you left the scene the drunk stole 5 coins from you!", True
 
-        elif answer == "yes":
+        elif answer == "a":
             if random.random() < 0.5:
                 return "They totally underestimated your abilities, your opponent lies deep asleep on the ground, you won!", True
             else:
@@ -575,8 +577,8 @@ class GameLogic:
 
     def task_5_0(self, answer):
         if answer == "question":
-            return "Task 1: Is dziewięćsetdziewięćdziesięciodziewięcionarodowościowego a real word in the beautiful Polish language? (yes/no)", False
-        elif answer == "yes":
+            return "<div><strong>Task 1: Is dziewięćsetdziewięćdziesięciodziewięcionarodowościowego a real word in the beautiful Polish language?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -584,8 +586,8 @@ class GameLogic:
 
     def task_5_1(self, answer):
         if answer == "question":
-            return "Task 2: Was the original Fortnite battle royale map based off of Poland? (yes/no)", False
-        elif answer == "yes":
+            return "<div><strong>Task 2: Was the original Fortnite battle royale map based off of Poland?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -593,9 +595,9 @@ class GameLogic:
 
     def task_5_2(self, answer):
         if answer == "question":
-            return "Task 3: What would be a traditional Polish breakfast? (a. a cigarette, b. a cigarette with a shot of alcohol, c. a cigarette with a bottle of alcohol, d. a pack of cigarettes with a bottle of alcohol)", False
+            return "<div><strong>Task 3: What would be a traditional Polish breakfast?</strong><ul><li>a) A cigarette</li><li>b) A cigarette and a shot of alcohol</li><li>c) A cigarette and a bottle of alcohol</li><li>d) A pack of cigarettes and a bottle of alcohol</li></ul>", False
         elif answer == "d":
-            return "Correct! Truly nutritious + 1 coin", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -604,14 +606,14 @@ class GameLogic:
         answer = answer.strip().lower()
 
         if answer == "question":
-            return "Task 4: A man offers you Polmos Spirytus Rektyfikowany 96% vodka. Try it? (yes/no)", False
+            return "<div><strong>Task 4: Wanna try Polmos Spirytus Rektyfikowany 96% vodka?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
 
-        if answer == "no":
+        if answer == "b":
             return "Alright, moving on", True
 
-        elif answer == "yes":
+        elif answer == "a":
             if random.random() < 0.5:
-                return "It burns a little bit, but tastes truly delightful! The man rewarder you with a coin!", True
+                return "It burns a little bit, but tastes truly delightful!", True
             else:
                 return "It was way too strong for you, you had to take a visit to the hospital. -1HP", True
 
@@ -620,17 +622,17 @@ class GameLogic:
 
     def task_5_4(self, answer):
         if answer == "question":
-            return "Task 5: What is the sacred gift Poland has given this globe? (a. Toothpaste, b. Vodka, c. Paper clips) ", False
+            return "<div><strong>Task 5: What is the sacred gift Poland invented for this world?</strong><ul><li>a) Toothpaste</li><li>b) Vodka</li><li>c) Paper clips</li><li>d) Mini-computers</li></ul>", False
         elif answer == "b":
-            return "Correct! Thank you Poland <3", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "That's a good one, but there is a way better one", False
+            return "Incorrect!", False
 
     def task_6_0(self, answer):
         if answer == "question":
-            return "Task 1: Luxembourg is known for being a rather wealthy place, what's their GDP per capita? (a. ~140 000€, b. ~60 000€, c. 250 000€)", False
-        elif answer == "b":
+            return "<div><strong>Task 1: Luxembourg is known for being a rather wealthy place, how much is their GDP per capita?</strong><ul><li>a) 140 000€</li><li>b) 60 000€</li><li>c) 250 000€</li><li>d) 100 000€</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -638,7 +640,7 @@ class GameLogic:
 
     def task_6_1(self, answer):
         if answer == "question":
-            return "Task 2: The country is also known for being really small, how big are they then? (a. ~30 000km2, b. ~6 000km2, c. ~2 600km2)", False
+            return "<div><strong>Task 2: The country is also known for being small, how small are they exactly?</strong><ul><li>a) 30 000km2</li><li>b) 6 000km</li><li>c) 2 600km</li><li>d) 130 000km2</li></ul>", False
         elif answer == "c":
             return "Correct! + 1 coin", True
         else:
@@ -647,8 +649,8 @@ class GameLogic:
 
     def task_6_2(self, answer):
         if answer == "question":
-            return "Task 3: Luxembourg has a very generic flag with the colors red, white and blue. In what order do they go though? (from up to down)", False
-        elif answer == "red white blue" or answer == "red and white and blue" or answer == "red, white and blue":
+            return "<div><strong>Task 3: Luxembourg has a very generic flag with red, white and blue. In what order does it go? (from up to down)</strong><ul><li>a) Red White Blue</li><li>b) Blue White Red</li><li>c) White Red Blue</li><li>d) Blue Red White</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -656,29 +658,29 @@ class GameLogic:
 
     def task_6_3(self, answer):
         if answer == "question":
-            return "Task 4: For its size, Luxembourg has an extensive public transport network, what's the cost then? (a. It's cheap, b. It's expensive, c. It's free)", False
+            return "<div><strong>Task 4: For its size, Luxembourg has an extensive public transit system, what does it cost though?</strong><ul><li>a) It's cheap</li><li>b) It's expensive</li><li>c) It's free</li></ul>", False
         elif answer == "c":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "Incorrect!", True
+            return "Incorrect!", False
 
     def task_6_4(self, answer):
         if answer == "question":
-            return "Task 5: Before you leave, would you like to go to a local coffee place? (yes/no)", False
-        elif answer == "no":
+            return "<div><strong>Task 5: Wanna go for a coffee before you leave?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "b":
             return "Alright moving on...", True
-        elif answer == "yes":
+        elif answer == "a":
             self.hp += 1
             self.coins -= 3
             return "Now that was an expensive coffee! You paid 3 coins but gained one HP!", True
         else:
             self.hp -= 1
-            return "You didnt make a choice fast enough and stumbled! - 1 HP", False
+            return "You made the wrong choice, stumbled and lost one HP", False
 
     def task_7_0(self, answer):
         if answer == "question":
-            return "Task 1: Norway's a very mountainous country, what's the highest peak of Norway called? (a. Oksskolten, b. Galdhøpiggen, c. Store Trolla)", False
+            return "<div><strong>Task 1: Norway's a very mountainous country, what's their highest peak called?</strong><ul><li>a) Oksskolten</li><li>b) Galdhøpiggen</li><li>c) Store Trolla</li><li>d) Saana</li></ul>", False
         elif answer == "b":
             return "Correct! + 1 coin", True
         else:
@@ -687,8 +689,8 @@ class GameLogic:
 
     def task_7_1(self, answer):
         if answer == "question":
-            return "Task 2: Norwegian is a beautiful north Germanic language, having roots to old Norse. Is it true that it has two different written forms? (yes/no)", False
-        elif answer == "yes":
+            return "<div><strong>Task 2: Norwegian is a beautiful north Germanic language, having roots to old Norse. Is it true that it has two different written forms?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -696,7 +698,7 @@ class GameLogic:
 
     def task_7_2(self, answer):
         if answer == "question":
-            return "Task 3: Norway's coastline is often misunderstood, it's very long... But how long exactly? (a. 23 718km, b. 83 281km, c. 1 288km)", False
+            return "<div><strong>Task 3: Norway's coastline is often misunderstood, how long is it exactly?</strong><ul><li>a) 23 718km</li><li>b) 83 281km</li><li>c) 1 288km</li><li>d) 98 766km</li></ul>", False
         elif answer == "b":
             return "Correct! + 1 coin", True
         else:
@@ -705,8 +707,8 @@ class GameLogic:
 
     def task_7_3(self, answer):
         if answer == "question":
-            return "Task 4: Students in Norway celebrate 'Russfeiring', does it really last for a whole month? (yes/no)", False
-        elif answer == "yes":
+            return "<div><strong>Task 4: Norwegian students celebrate 'Russfeiring', does it really go on for a whole month?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -714,8 +716,8 @@ class GameLogic:
 
     def task_7_4(self, answer):
         if answer == "question":
-            return "Task 5: Is the colonel-in-chief of the Norwegian King's Guard... a penguin? (yes/no)", False
-        elif answer == "yes":
+            return "<div><strong>Task 5: Is the colonel-in-chief of the Norwegian King's Guard... a penguin?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -723,16 +725,16 @@ class GameLogic:
 
     def task_8_0(self, answer):
         if answer == "question":
-            return "Task 1: Is BTS your favourite band? (yes/no)", False
-        elif answer == "yes":
+            return "<div><strong>Task 1: Is BTS your favourite band?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "Death sentence.", False
+            return "Incorrect!", False
 
     def task_8_1(self, answer):
         if answer == "question":
-            return "Task 2: Which one of these is a world famous Korean food? (a. Tempura, b. Tunkatsu, c. Kimchi)", False
+            return "<div><strong>Task 2: Which one of these is a world famous Korean food?</strong><ul><li>a) Tempura</li><li>b) Tunkatsu</li><li>c) Kimchi</li><li>d) Lörtsy</li></ul>", False
         elif answer == "c":
             return "Correct! + 1 coin", True
         else:
@@ -741,7 +743,7 @@ class GameLogic:
 
     def task_8_2(self, answer):
         if answer == "question":
-            return "Task 3: Seoul is a city nearly right at the border with North Korea, how many people live inside the metropolitan area? (a. 15 000 000, b. 20 000 000, c. 25 000 000)", False
+            return "<div><strong>Task 3: Seoul is the largest city in the country, how many people live inside the metropolitan area?</strong><ul><li>a) 15 000 000</li><li>b) 20 000 000</li><li>c) 25 000 000</li><li>d) 30 000 000</li></ul>", False
         elif answer == "c":
             return "Correct! + 1 coin", True
         else:
@@ -750,63 +752,65 @@ class GameLogic:
 
     def task_8_3(self, answer):
         if answer == "question":
-            return "Task 4: Are you a North Korean defector? (yes/no)", False
-        elif answer == "no":
-            return "All good then!", True
+            return "<div><strong>Task 4: Are you a North Korean defector?</strong><ul><li>a) Yes</li><li>b) No</li><li>c) What?</li><li>d) Maybe</li></ul>", False
+        elif answer == "a":
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "Sending you back immediately.", False
+            return "Incorrect!", False
 
     def task_8_4(self, answer):
         if answer == "question":
-            return "Task 5: 리그 오브 레전드를 하시나요? (yes/no)", False
+            return "<div><strong>Task 5: 리그 오브 레전드를 하시나요?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
         elif answer == "yes":
-            return "꼭 전문가에게 문의하세요! + 1 coin", True
+            return "Good to hear! + 1 coin", True
         else:
             self.player_status()
-            return "아... 그럼 플레이를 시작해야 할 것 같아요", False
+            return "What a shame", False
 
     def task_9_0(self, answer):
         if answer == "question":
-            return "Task 1: Everyone stand up for the pledge of allegiance! What's the 6th word of the verse? (a. Flag, b. I, c. America)", False
+            return "<di><strong>Task 1: Everyone stand up for the pledge of allegiance! What's the 6th word of the verse?</strong><ul><li>a) Flag</li><li>b) I</li><li>c) America</li><li>d) God</li></ul>", False
         elif answer == "a":
-            return "You are correct, fellow patriot! + 1 coin", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "Wrong, deported!", False
+            return "Incorrect!", False
 
     def task_9_1(self, answer):
         if answer == "question":
-            return "Task 2: They sure love their guns, maybe even more than they love their siblings, are there more civilian firearms owned than people themselves? (yes/no)", False
-        elif answer == "yes":
-            return "Hell yeah! + 1 coin", True
+            return "<div><strong>Task 2: They sure love their guns, maybe even more than they love their siblings, are there more civilian firearms owned than people themselves?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "a":
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "What? You don't like guns, are you a LIBERAL SISSY??", False
+            return "Incorrect!", False
 
     def task_9_2(self, answer):
         if answer == "question":
-            return "Task 3: When did the greatest country on Earth gain independence? (a. 1677, b. 1750, c. 1776)", False
+            return "<div><strong>Task 3: When did the greatest country on Earth gain independence?</strong><ul><li>a) 1677</li><li>b) 1750</li><li>c) 1776</li><li>d) 1803</li></ul>", False
         elif answer == "c":
-            return "Hell yeah! Older than your mother! + 1 coin", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "How do you not know this? It's the greatest country on Earth!", False
+            return "Incorrect!", False
 
     def task_9_3(self, answer):
         if answer == "question":
-            return "Task 4: Do you believe in our lord and savior Donald Trump? (yes/yes)", False
-        elif answer == "yes":
-            return "Trump! Trump! Trump! + 1 coin", True
+            return "<div><strong>Task 4: Do you believe in our lord and savior Donald Trump?</strong><ul><li>a) Yes</li><li>b) Yes</li></ul>", False
+        elif answer == "a" or "b":
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "Incorrect, DEPORTED!", False
+            return "Wrong choice, you got punched. - 1 HP", False
+
 
     def task_9_4(self, answer):
         if answer == "question":
-            return "Task 5: Start nuclear war with Russia? (yes/no)", False
-        elif answer == "yes":
-            return "", True
+            return "<div><strong>Task 5: Start a nuclear war with Russia?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
+        elif answer == "a":
+            self.end_game()
+            return "End scores updated, sorry this is unfinished", True
         else:
             self.player_status()
             return "", False
