@@ -104,7 +104,6 @@ class GameLogic:
             connection = get_db_connection()
             cursor = connection.cursor()
 
-            # Fetch leaderboard data while replacing NULL with '0' or a default value for hp, coins, time_spent, and level
             cursor.execute("""
                            SELECT player_name,
                                   COALESCE(time_spent, '0') AS time_spent,
@@ -118,18 +117,14 @@ class GameLogic:
             result = cursor.fetchall()
             connection.close()
 
-            # Check if there are any results
             if result:
                 scoreboard = "<div><strong>Leaderboard:</strong><ul>"
-                # Loop through the result set and format it as HTML
                 for row in result:
-                    print(f"Row: {row}")  # Debugging: print each row to check the values
+                    print(f"Row: {row}")
                     try:
-                        # Try to unpack the row into the expected values
                         player_name, time_spent, level, coins, hp = row
                         scoreboard += f"<li>{player_name} - Level: {level}, Time Spent: {time_spent}, Coins: {coins}, HP: {hp}</li>"
                     except ValueError as e:
-                        # If there are not enough values, print the error and skip this row
                         print(f"Error unpacking row: {row}, Error: {e}")
                         scoreboard += f"<li>Error loading player data (missing values).</li>"
 
@@ -160,7 +155,7 @@ class GameLogic:
 
         task = self.task_index[self.level][self.tasks_done]
         self.current_task = task
-        message, _ = task("question")
+        message, _ = task("question")  #--->Kriittinen<---#
 
         connection = get_db_connection()
         cursor = connection.cursor()
