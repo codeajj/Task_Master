@@ -61,6 +61,17 @@ class GameLogic:
             else:
                 return "You do not have enough coins to buy HP."
 
+        elif user_input == "?" or user_input == "help":
+            return "Actions avaible: Task, Next Level, Status, Buy HP (cost: 3 coins)"
+
+        elif user_input == "cigarette":
+            if self.coins >= 3:
+                self.hp -= 1
+                self.coins -= 3
+                return "You have smoked a cigarette! You lost one 1 HP and it cost 3 coins."
+            else:
+                return "Nuh uh"
+
         else:
             return self.handle_task_answer(user_input)
 
@@ -200,7 +211,7 @@ class GameLogic:
         if answer == "question":
             return "Task 1: What is the capital of Argentina?", False
         elif answer == "buenos aires":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -209,7 +220,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: What is the national language of Argnetina?", False
         elif answer == "spanish":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -218,7 +229,7 @@ class GameLogic:
         if answer == "question":
             return f"Task 3: Did Hitler escape to Argentina?\nYes, no or maybe?", False
         elif answer == "maybe":
-            return "Correct! I think?", True
+            return "Correct! I think? + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -227,7 +238,7 @@ class GameLogic:
         if answer == "question":
             return "Task 4: What is the currency of Argentina?", False
         elif answer == "peso":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -236,7 +247,7 @@ class GameLogic:
         if answer == "question":
             return "Task 5: You bump into Mesi, do you take a picture with him?", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -245,7 +256,7 @@ class GameLogic:
         if answer == "question":
             return "Task 1: What ominous rock lies in the center of Australia?", False
         elif answer == "uluru":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -254,7 +265,7 @@ class GameLogic:
         if answer == "question":
             return "What is the most populous city in Australia?", False
         elif answer == "sydney":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -263,7 +274,7 @@ class GameLogic:
         if answer == "question":
             return f"Task 3: How big is Australia? a) 9 million km2 b) 7.7 million km2 or c) 2 million km2", False
         elif answer == "b":
-            return "Correct! I think?", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -272,7 +283,7 @@ class GameLogic:
         if answer == "question":
             return "Task 4: A kangaroo insulted your mother, punch him?", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -281,7 +292,7 @@ class GameLogic:
         if answer == "question":
             return "Task 5: Go surfing?", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -290,7 +301,7 @@ class GameLogic:
         if answer == "question":
             return "Task 1: The Mongolian capital is known for being the ---- capital on Earth. (a. Coldest, b. Densest, c. Largest)", False
         elif answer == "a":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -299,7 +310,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: Mongolia has the lowest population density in the world, how many people are there per square kilometer? (a. 4/km2, b. 2/km2, c. 12/km2)", False
         elif answer == "b":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -308,7 +319,7 @@ class GameLogic:
         if answer == "question":
             return "Task 3: Mongolia is vast and empty, what desert covers nearly third of the country? (a. Sahara, b. Arctic, c. Gobi)", False
         elif answer == "c":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -353,7 +364,7 @@ class GameLogic:
         if answer == "question":
             return "Task 5: Mongolians enjoy a beverage called Airag, what is it though? (a. Fermented horse milk, b. Fermented berries and water, c. Goat's milk)", False
         elif answer == "a":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -371,7 +382,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: How long is the Great Wall of China? (a. ~21 000km, b. ~28 000km, c. ~5 000km)", False
         elif answer == "a":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -380,7 +391,7 @@ class GameLogic:
         if answer == "question":
             return "Task 3: 您同意将您的左肾捐给我们吗？ (of course/rather not)", False
         elif answer == "of course":
-            return "Wonderful! We'll come and remove your left kidney in about 3 to 4 business days", True
+            return "Wonderful! We'll come and remove your left kidney in about 3 to 4 business days. + 1 coin", True
         else:
             self.player_status()
             return "What a shame, we will find you anyway", False
@@ -389,7 +400,7 @@ class GameLogic:
         if answer == "question":
             return "Task 4: Is Taiwan a part of China? (yes/no)", False
         elif answer == "yes":
-            return "Correct! +social credits", True
+            return "Correct! + social credits", True
         else:
             self.player_status()
             return "KAAPPAUS TÄHÄN", False
@@ -414,6 +425,7 @@ class GameLogic:
 
                 if spin[0] == spin[1] == spin[2]:
                     casino_game_state["active"] = False
+                    self.coins += 10
                     return f"{result} - JACKPOT!!! You win, and you're thrown out for winning too much", True
                 elif spin[0] == spin[1] or spin[1] == spin[2] or spin[0] == spin[2]:
                     return f"{result} - You got a pair. Spins left: {casino_game_state['spins_left']}", False
@@ -440,7 +452,7 @@ class GameLogic:
 
         elif answer == "fight":
             if random.random() < 0.5:
-                return "You totally wrecked him! He sleeps on the ground", True
+                return "You totally wrecked him! He sleeps on the ground and stole one coin from him!", True
             else:
                 self.hp -= 1
                 return "You tried your best, but the drunken German comes on top. -1HP", True
@@ -452,7 +464,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: Was ist das Nationalgericht Deutschlands? (a. wiener schnitzel, b. sauerbraten, c. currywurst)", False
         elif answer == "b":
-            return "Richtig!", True
+            return "Richtig! + 1 coin", True
         else:
             self.player_status()
             return "Falsch!", False
@@ -473,7 +485,8 @@ class GameLogic:
             return "Task 4: A local challenges you to a beer drinking competition. Do you accept? (yes/no)", False
 
         if answer == "no":
-            return "Alright, moving on", True
+            self.coins -= 5
+            return "Alright, moving on but the drunk stole 5 coins from you!", True
 
         elif answer == "yes":
             if random.random() < 0.5:
@@ -488,7 +501,7 @@ class GameLogic:
         if answer == "question":
             return "Task 5: Sollen wir Polen angreifen? (ja/nein)", False
         elif answer == "ja":
-            return "Wunderbar!", True
+            return "Wunderbar! + 1 coin", True
         else:
             self.player_status()
             return "Verlierer.", False
@@ -497,7 +510,7 @@ class GameLogic:
         if answer == "question":
             return "Task 1: Is dziewięćsetdziewięćdziesięciodziewięcionarodowościowego a real word in the beautiful Polish language? (yes/no)", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -506,7 +519,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: Was the original Fortnite battle royale map based off of Poland? (yes/no)", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -515,7 +528,7 @@ class GameLogic:
         if answer == "question":
             return "Task 3: What would be a traditional Polish breakfast? (a. a cigarette, b. a cigarette with a shot of alcohol, c. a cigarette with a bottle of alcohol, d. a pack of cigarettes with a bottle of alcohol)", False
         elif answer == "d":
-            return "Correct! Truly nutritious", True
+            return "Correct! Truly nutritious + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -524,14 +537,14 @@ class GameLogic:
         answer = answer.strip().lower()
 
         if answer == "question":
-            return "Task 4: Wanna try Polmos Spirytus Rektyfikowany 96% vodka? (yes/no)", False
+            return "Task 4: A man offers you Polmos Spirytus Rektyfikowany 96% vodka. Try it? (yes/no)", False
 
         if answer == "no":
             return "Alright, moving on", True
 
         elif answer == "yes":
             if random.random() < 0.5:
-                return "It burns a little bit, but tastes truly delightful!", True
+                return "It burns a little bit, but tastes truly delightful! The man rewarder you with a coin!", True
             else:
                 return "It was way too strong for you, you had to take a visit to the hospital. -1HP", True
 
@@ -551,7 +564,7 @@ class GameLogic:
         if answer == "question":
             return "Task 1: Luxembourg is known for being a rather wealthy place, what's their GDP per capita? (a. ~140 000€, b. ~60 000€, c. 250 000€)", False
         elif answer == "b":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -560,7 +573,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: The country is also known for being really small, how big are they then? (a. ~30 000km2, b. ~6 000km2, c. ~2 600km2)", False
         elif answer == "c":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -569,7 +582,7 @@ class GameLogic:
         if answer == "question":
             return "Task 3: Luxembourg has a very generic flag with the colors red, white and blue. In what order do they go though? (from up to down)", False
         elif answer == "red white blue" or answer == "red and white and blue" or answer == "red, white and blue":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -578,25 +591,29 @@ class GameLogic:
         if answer == "question":
             return "Task 4: For its size, Luxembourg has an extensive public transport network, what's the cost then? (a. It's cheap, b. It's expensive, c. It's free)", False
         elif answer == "c":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
-            return "Incorrect!", False
+            return "Incorrect!", True
 
     def task_6_4(self, answer):
         if answer == "question":
             return "Task 5: Before you leave, would you like to go to a local coffee place? (yes/no)", False
         elif answer == "no":
-            return "ETEENPÄIN", True
+            return "Alright moving on...", True
+        elif answer == "yes":
+            self.hp += 1
+            self.coins -= 3
+            return "Now that was an expensive coffee! You paid 3 coins but gained one HP!", True
         else:
-            self.player_status()
-            return "VELKAANNUIT", False
+            self.hp -= 1
+            return "You didnt make a choice fast enough and stumbled! - 1 HP", False
 
     def task_7_0(self, answer):
         if answer == "question":
             return "Task 1: Norway's a very mountainous country, what's the highest peak of Norway called? (a. Oksskolten, b. Galdhøpiggen, c. Store Trolla)", False
         elif answer == "b":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -605,7 +622,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: Norwegian is a beautiful north Germanic language, having roots to old Norse. Is it true that it has two different written forms? (yes/no)", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -614,7 +631,7 @@ class GameLogic:
         if answer == "question":
             return "Task 3: Norway's coastline is often misunderstood, it's very long... But how long exactly? (a. 23 718km, b. 83 281km, c. 1 288km)", False
         elif answer == "b":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -623,7 +640,7 @@ class GameLogic:
         if answer == "question":
             return "Task 4: Students in Norway celebrate 'Russfeiring', does it really last for a whole month? (yes/no)", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -632,7 +649,7 @@ class GameLogic:
         if answer == "question":
             return "Task 5: Is the colonel-in-chief of the Norwegian King's Guard... a penguin? (yes/no)", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -641,7 +658,7 @@ class GameLogic:
         if answer == "question":
             return "Task 1: Is BTS your favourite band? (yes/no)", False
         elif answer == "yes":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Death sentence.", False
@@ -650,7 +667,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: Which one of these is a world famous Korean food? (a. Tempura, b. Tunkatsu, c. Kimchi)", False
         elif answer == "c":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -659,7 +676,7 @@ class GameLogic:
         if answer == "question":
             return "Task 3: Seoul is a city nearly right at the border with North Korea, how many people live inside the metropolitan area? (a. 15 000 000, b. 20 000 000, c. 25 000 000)", False
         elif answer == "c":
-            return "Correct!", True
+            return "Correct! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect!", False
@@ -677,7 +694,7 @@ class GameLogic:
         if answer == "question":
             return "Task 5: 리그 오브 레전드를 하시나요? (yes/no)", False
         elif answer == "yes":
-            return "꼭 전문가에게 문의하세요!", True
+            return "꼭 전문가에게 문의하세요! + 1 coin", True
         else:
             self.player_status()
             return "아... 그럼 플레이를 시작해야 할 것 같아요", False
@@ -686,7 +703,7 @@ class GameLogic:
         if answer == "question":
             return "Task 1: Everyone stand up for the pledge of allegiance! What's the 6th word of the verse? (a. Flag, b. I, c. America)", False
         elif answer == "a":
-            return "You are correct, fellow patriot!", True
+            return "You are correct, fellow patriot! + 1 coin", True
         else:
             self.player_status()
             return "Wrong, deported!", False
@@ -695,7 +712,7 @@ class GameLogic:
         if answer == "question":
             return "Task 2: They sure love their guns, maybe even more than they love their siblings, are there more civilian firearms owned than people themselves? (yes/no)", False
         elif answer == "yes":
-            return "Hell yeah! ", True
+            return "Hell yeah! + 1 coin", True
         else:
             self.player_status()
             return "What? You don't like guns, are you a LIBERAL SISSY??", False
@@ -704,7 +721,7 @@ class GameLogic:
         if answer == "question":
             return "Task 3: When did the greatest country on Earth gain independence? (a. 1677, b. 1750, c. 1776)", False
         elif answer == "c":
-            return "Hell yeah! Older than your mother", True
+            return "Hell yeah! Older than your mother! + 1 coin", True
         else:
             self.player_status()
             return "How do you not know this? It's the greatest country on Earth!", False
@@ -713,7 +730,7 @@ class GameLogic:
         if answer == "question":
             return "Task 4: Do you believe in our lord and savior Donald Trump? (yes/yes)", False
         elif answer == "yes":
-            return "Trump! Trump! Trump!", True
+            return "Trump! Trump! Trump! + 1 coin", True
         else:
             self.player_status()
             return "Incorrect, DEPORTED!", False
