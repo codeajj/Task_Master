@@ -1,4 +1,16 @@
 import mysql.connector
+import random
+
+archery_game_state = {
+    "active": False,
+    "shots_left": 0,
+    "score": 0
+}
+
+casino_game_state = {
+    "active": False,
+    "spins_left": 0
+}
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -302,13 +314,40 @@ class GameLogic:
             return "Incorrect!", False
 
     def task_2_3(self, answer):
+        global archery_game_state
+        answer = answer.strip().lower()
+
         if answer == "question":
             return "Task 4: Would you like to attend an archery competition? (yes/no)", False
+
+        if archery_game_state["active"]:
+            if archery_game_state["shots_left"] <= 0:
+                archery_game_state["active"] = False
+                final_score = archery_game_state["score"]
+                archery_game_state["score"] = 0
+                return f"Competition finished! You scored {final_score} points.", True
+
+            if answer == "shoot":
+                archery_game_state["shots_left"] -= 1
+                hit = random.random() < 0.7
+                if hit:
+                    points = random.choice([1, 2, 3])
+                    archery_game_state["score"] += points
+                    self.coins += 1
+                    return f"Hit! You scored {points} points. Arrows left: {archery_game_state['shots_left']}", False
+                else:
+                    return f"Miss! Arrows left: {archery_game_state['shots_left']}", False
+            else:
+                return "Type 'shoot' to fire your next arrow", False
+
         elif answer == "yes":
-            return "jee", True
+            archery_game_state["active"] = True
+            archery_game_state["shots_left"] = 3
+            archery_game_state["score"] = 0
+            return "Welcome to the traditional Mongolian archery competition! You have 3 arrows. Type 'shoot' to fire your first shot", False
+
         else:
-            self.player_status()
-            return "eteenpäin", False
+            return "Alright, moving on", True
 
     def task_2_4(self, answer):
         if answer == "question":
@@ -356,22 +395,58 @@ class GameLogic:
             return "KAAPPAUS TÄHÄN", False
 
     def task_3_4(self, answer):
+        global casino_game_state
+        answer = answer.strip().lower()
+
         if answer == "question":
-            return "Task 5: HONK KONG CASINO TÄHÄN (hell yeah/hell no)", False
-        elif answer == "hell yeah":
-            return "KASINO", True
+            return "Task 5: Welcome to Hong Kong Casino! You totally should play to slot machine! (yes/no)", False
+
+        if casino_game_state["active"]:
+            if casino_game_state["spins_left"] <= 0:
+                casino_game_state["active"] = False
+                return "You're out of spins, sorry gambler", True
+
+            if answer == "spin":
+                symbols = ["apple", "bell", "lemon", "diamond", "seven"]
+                spin = [random.choice(symbols) for _ in range(3)]
+                result = " | ".join(spin)
+                casino_game_state["spins_left"] -= 1
+
+                if spin[0] == spin[1] == spin[2]:
+                    casino_game_state["active"] = False
+                    return f"{result} - JACKPOT!!! You win, and you're thrown out for winning too much", True
+                elif spin[0] == spin[1] or spin[1] == spin[2] or spin[0] == spin[2]:
+                    return f"{result} - You got a pair. Spins left: {casino_game_state['spins_left']}", False
+                else:
+                    return f"{result} - No luck. Spins left: {casino_game_state['spins_left']}", False
+            else:
+                return "Type 'spin' to start gambling!", False
+
+        elif answer == "yes":
+            casino_game_state["active"] = True
+            casino_game_state["spins_left"] = 3
+            return "Type 'spin' to start gambling. You have 3 spins.", False
         else:
-            self.player_status()
-            return "KASINO", False
+            return "A true gambler never puts down a chance to riches, but whatever. Moving on", True
 
     def task_4_0(self, answer):
+        answer = answer.strip().lower()
+
         if answer == "question":
-            return "Task 1: KÄNNILÄISTAPPELU (fight/flee)", False
-        elif answer == "flee":
-            return "You have fled", True
+            return "Task 1: Geh mir aus dem Weg! Willst du kämpfen? (he wants to fight) (flee/fight)", False
+
+        if answer == "flee":
+            return "You have decided to ignore and walk away", True
+
+        elif answer == "fight":
+            if random.random() < 0.5:
+                return "You totally wrecked him! He sleeps on the ground", True
+            else:
+                self.hp -= 1
+                return "You tried your best, but the drunken German comes on top. -1HP", True
+
         else:
-            self.player_status()
-            return "Fight!", False
+            return "No other options, lil bro", False
 
     def task_4_1(self, answer):
         if answer == "question":
@@ -392,13 +467,22 @@ class GameLogic:
             return "Wunderbar!", False
 
     def task_4_3(self, answer):
+        answer = answer.strip().lower()
+
         if answer == "question":
-            return "Task 4: KALJANJUONTI KISA TÄHÄN", False
-        elif answer == "no":
-            return "eteenpäin!", True
+            return "Task 4: A local challenges you to a beer drinking competition. Do you accept? (yes/no)", False
+
+        if answer == "no":
+            return "Alright, moving on", True
+
+        elif answer == "yes":
+            if random.random() < 0.5:
+                return "They totally underestimated your abilities, your opponent lies deep asleep on the ground, you won!", True
+            else:
+                return "You blacked out way too early, they laugh as you lay nearly lifeless on the ground. -1HP", True
+
         else:
-            self.player_status()
-            return "jatka tehtävään!", False
+            return "No other options, lil bro", False
 
     def task_4_4(self, answer):
         if answer == "question":
@@ -437,13 +521,22 @@ class GameLogic:
             return "Incorrect!", False
 
     def task_5_3(self, answer):
+        answer = answer.strip().lower()
+
         if answer == "question":
             return "Task 4: Wanna try Polmos Spirytus Rektyfikowany 96% vodka? (yes/no)", False
-        elif answer == "no":
-            return "Weak!", True
+
+        if answer == "no":
+            return "Alright, moving on", True
+
+        elif answer == "yes":
+            if random.random() < 0.5:
+                return "It burns a little bit, but tastes truly delightful!", True
+            else:
+                return "It was way too strong for you, you had to take a visit to the hospital. -1HP", True
+
         else:
-            self.player_status()
-            return "Yeah!", False
+            return "No other options, lil bro", False
 
     def task_5_4(self, answer):
         if answer == "question":
