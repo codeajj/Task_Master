@@ -41,7 +41,7 @@ class GameLogic:
         }
 
     def end_game(self):
-        player_name = "Yrjö"
+        player_name = "Filler"
         # Calculate the total time spent
         end_time = time.time()
         time_spent = end_time - self.start_time  # Time in seconds
