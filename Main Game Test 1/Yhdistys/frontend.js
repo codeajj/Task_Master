@@ -14,40 +14,40 @@ document.addEventListener("DOMContentLoaded", (evt) => {
     if (!user_input) return
 
     appendToTerminal(`> ${user_input}`)
-    input.value = "" // Reset input field
+    input.value = "" //tyhjennä input field inputin jälkeen
 
-    const response = await send_input(user_input) // Wait for API response
+    const response = await send_input(user_input) // odota api vastausta
     handle_response(response)
   })
 
-  // Listen for "Next Task" button click
+  // napit nextLevel ja taskButton odottaa sen painamista
   taskButton.addEventListener("click", async () => {
-    const response = await send_input("task") // Send the request for the next task
+    const response = await send_input("task")
     handle_response(response)
   })
   nextLevelButton.addEventListener("click", async () => {
-    const response = await send_input("next level") // Send the "next level" request
+    const response = await send_input("next level")
     handle_response(response)
   })
-
+// lähettää inputin api:lle
   async function send_input(text) {
     try {
       const response = await fetch("http://localhost:5000/game", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input: text })
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({input: text})
       })
       const data = await response.json()
       return data
     } catch (error) {
-      return { response: "Error: Couldn't connect to server." }
+      return {response: "Error: Couldn't connect to server."}
     }
   }
 
   function handle_response(data) {
     if (!data.response) return
 
-    // If the response has terminal info
+    // katsotaan että käsitellään tuleva data oikein
     if (typeof data.response === "object" && data.response.terminal) {
       appendToTerminal(data.response.terminal)
 
@@ -65,10 +65,29 @@ document.addEventListener("DOMContentLoaded", (evt) => {
       appendToTerminal(data.response)
     }
   }
-
   function appendToTerminal(text) {
     terminal.innerHTML += `<div>${text}</div>`
     terminal.scrollTop = terminal.scrollHeight
   }
+  // aika systeemi
+  let secondsElapsed = 0;
 
+  function formatTime(seconds) {
+    const hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
+    return `${hours}:${minutes}:${secs}`;
+  }
+
+  function updateClock() {
+    secondsElapsed++;
+    const timeElement = document.getElementById("current-time");
+    if (timeElement) {
+      timeElement.textContent = formatTime(secondsElapsed);
+    }
+  }
+
+// Start ticking every second
+  setInterval(updateClock, 1000);
+  updateClock();
 })
