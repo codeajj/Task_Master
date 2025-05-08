@@ -181,10 +181,10 @@ class GameLogic:
                 'China',
                 'Germany',
                 'Poland',
-                'Luxemburg',
+                'Luxembourg',
                 'Norway',
                 'South Korea',
-                'America'
+                'United States of America'
             ]
 
             if self.level - 1 < len(country_order):
