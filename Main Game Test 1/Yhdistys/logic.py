@@ -1,5 +1,6 @@
 import mysql.connector
 import random
+import time
 
 archery_game_state = {
     "active": False,
@@ -22,7 +23,7 @@ def get_db_connection():
 
 class GameLogic:
     def __init__(self):
-        self.game_state = True
+        self.start_time = time.time()
         self.hp = 3; self.coins = 0; self.tries = 3 #Player status
         self.level = 0; self.tasks_done = 0; self.current_task = None #Task status
         self.task_index = { #Countries
@@ -38,6 +39,31 @@ class GameLogic:
             9: [self.task_9_0, self.task_9_1, self.task_9_2, self.task_9_3, self.task_9_4], #America
 
         }
+
+    def end_game(self):
+        player_name = "Yrjö"
+        # Calculate the total time spent
+        end_time = time.time()
+        time_spent = end_time - self.start_time  # Time in seconds
+        hours = int(time_spent // 3600)
+        minutes = int((time_spent % 3600) // 60)
+        seconds = int(time_spent % 60)
+        time_spent_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+
+        # Save the data to the leaderboard
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+                       INSERT INTO leaderboard (player_name, time_spent, level, coins, hp)
+                       VALUES (%s, %s, %s, %s, %s)
+                       """, (player_name, time_spent_str, self.level, self.coins, self.hp))
+
+        connection.commit()
+        connection.close()
+
+        return "Game Over. Your progress has been saved."
+
     def process_input(self, user_input): #Otetaan input, tarkastetaan mitä kirjoitettu.
         user_input = user_input.lower().strip()
         #Next Task kutsu/tarkastus
@@ -72,6 +98,45 @@ class GameLogic:
             else:
                 return "Nuh uh"
 
+        elif user_input == "scoreboard":
+            connection = get_db_connection()
+            cursor = connection.cursor()
+
+            # Fetch leaderboard data while replacing NULL with '0' or a default value for hp, coins, time_spent, and level
+            cursor.execute("""
+                           SELECT player_name,
+                                  COALESCE(time_spent, '0') AS time_spent,
+                                  COALESCE(level, 0)        AS level,
+                                  COALESCE(coins, 0)        AS coins,
+                                  COALESCE(hp, 0)           AS hp
+                           FROM leaderboard
+                           ORDER BY level DESC, time_spent ASC 
+                           LIMIT 10
+                           """)
+            result = cursor.fetchall()
+            connection.close()
+
+            # Check if there are any results
+            if result:
+                scoreboard = "<div><strong>Leaderboard:</strong><ul>"
+                # Loop through the result set and format it as HTML
+                for row in result:
+                    print(f"Row: {row}")  # Debugging: print each row to check the values
+                    try:
+                        # Try to unpack the row into the expected values
+                        player_name, time_spent, level, coins, hp = row
+                        scoreboard += f"<li>{player_name} - Level: {level}, Time Spent: {time_spent}, Coins: {coins}, HP: {hp}</li>"
+                    except ValueError as e:
+                        # If there are not enough values, print the error and skip this row
+                        print(f"Error unpacking row: {row}, Error: {e}")
+                        scoreboard += f"<li>Error loading player data (missing values).</li>"
+
+                scoreboard += "</ul></div>"
+            else:
+                scoreboard = "N/A"
+
+            return scoreboard
+
         else:
             return self.handle_task_answer(user_input)
 
@@ -84,6 +149,8 @@ class GameLogic:
             self.tries -= 1
             if self.tries <= 0:
                 self.hp -= 1
+        if self.hp <= 0:
+            self.end_game()
 
     def next_task(self): #Tehtyjen tarkastus
         if self.tasks_done == 5:
@@ -209,8 +276,8 @@ class GameLogic:
 
     def task_0_0(self, answer):
         if answer == "question":
-            return "Task 1: What is the capital of Argentina?", False
-        elif answer == "buenos aires":
+            return "<di><strong>Task 1: What is the capital of Argentina?</strong><ul><li>a) Buenos Aires</li><li>b) Helsinki</li><li>c) Madrid</li><li>d) Lieksà</li></ul>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -218,8 +285,8 @@ class GameLogic:
 
     def task_0_1(self, answer):
         if answer == "question":
-            return "Task 2: What is the national language of Argnetina?", False
-        elif answer == "spanish":
+            return "<di><strong>Task 2: What is the national language of Argnetina?</strong><ul><li>a) Finnish</li><li>b) Peso</li><li>c) Italian</li><li>d) Spanish</li></ul>", False
+        elif answer == "d":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -227,8 +294,8 @@ class GameLogic:
 
     def task_0_2(self, answer):
         if answer == "question":
-            return f"Task 3: Did Hitler escape to Argentina?\nYes, no or maybe?", False
-        elif answer == "maybe":
+            return "<div><strong>Task 3: Did Hitler escape to Argentina?</strong><ul><li>a) Yes</li><li>b) No</li><li>c) Maybe</li></ul></div>", False
+        elif answer == "c":
             return "Correct! I think? + 1 coin", True
         else:
             self.player_status()
@@ -236,7 +303,7 @@ class GameLogic:
 
     def task_0_3(self, answer):
         if answer == "question":
-            return "Task 4: What is the currency of Argentina?", False
+            return "<div><strong>Task 4: What is the currency of Argentina?</strong><ul><li>a) Euro</li><li>b) Peso</li><li>c) Dollar</li><li>d) Brazilian dollar</li></ul></div>", False
         elif answer == "peso":
             return "Correct! + 1 coin", True
         else:
@@ -245,7 +312,7 @@ class GameLogic:
 
     def task_0_4(self, answer):
         if answer == "question":
-            return "Task 5: You bump into Mesi, do you take a picture with him?", False
+            return "Task 5: You bump into Mesi, do you take a picture with him?", False #TODO pitää tehdä!
         elif answer == "yes":
             return "Correct! + 1 coin", True
         else:
@@ -254,8 +321,8 @@ class GameLogic:
 
     def task_1_0(self, answer):
         if answer == "question":
-            return "Task 1: What ominous rock lies in the center of Australia?", False
-        elif answer == "uluru":
+            return "<div><strong>Task 1: What ominous rock lies in the center of Australia?</strong><ul><li>a) Jack</li><li>b) There is no rock</li><li>c) Uluru</li><li>d) Omuamua</li></ul></div>", False
+        elif answer == "c":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -263,8 +330,8 @@ class GameLogic:
 
     def task_1_1(self, answer):
         if answer == "question":
-            return "What is the most populous city in Australia?", False
-        elif answer == "sydney":
+            return "<div><strong>Task 2: What is the most populous city in Australia?</strong><ul><li>a) Sydney</li><li>b) Melbourne</li><li>c) Perth</li><li>d) Adelaide</li></ul></div>", False
+        elif answer == "a":
             return "Correct! + 1 coin", True
         else:
             self.player_status()
@@ -272,7 +339,7 @@ class GameLogic:
 
     def task_1_2(self, answer):
         if answer == "question":
-            return f"Task 3: How big is Australia? a) 9 million km2 b) 7.7 million km2 or c) 2 million km2", False
+            return "<div><strong>Task 3: How big is Australia?</strong><ul><li>a) 9,2 million km2</li><li>b) 7,7 million km2</li><li>c) 2,9 million km2</li><li>d) 8,1 million km2</li></ul></div>", False
         elif answer == "b":
             return "Correct! + 1 coin", True
         else:
@@ -281,7 +348,7 @@ class GameLogic:
 
     def task_1_3(self, answer):
         if answer == "question":
-            return "Task 4: A kangaroo insulted your mother, punch him?", False
+            return "Task 4: A kangaroo insulted your mother, punch him?", False #TODO
         elif answer == "yes":
             return "Correct! + 1 coin", True
         else:
@@ -290,7 +357,7 @@ class GameLogic:
 
     def task_1_4(self, answer):
         if answer == "question":
-            return "Task 5: Go surfing?", False
+            return "Task 5: Go surfing?", False #TODO
         elif answer == "yes":
             return "Correct! + 1 coin", True
         else:
@@ -299,7 +366,7 @@ class GameLogic:
 
     def task_2_0(self, answer):
         if answer == "question":
-            return "Task 1: The Mongolian capital is known for being the ---- capital on Earth. (a. Coldest, b. Densest, c. Largest)", False
+            return "<div><strong>Task 1: The Mongolian capital is known for being the ____ capital on Earth.</strong><ul><li>a) Coldest</li><li>b) Densest</li><li>c) Largest</li><li>d) Empty</li></ul></div>", False
         elif answer == "a":
             return "Correct! + 1 coin", True
         else:
@@ -308,7 +375,7 @@ class GameLogic:
 
     def task_2_1(self, answer):
         if answer == "question":
-            return "Task 2: Mongolia has the lowest population density in the world, how many people are there per square kilometer? (a. 4/km2, b. 2/km2, c. 12/km2)", False
+            return "<div><strong>Task 2: Mongolia has the lowest population density in the world, how many people are there per square kilometer?</strong><ul><li>a) 4/km2</li><li>b) 2/km2</li><li>c) 12/km2</li><li>d) 6/km2</li></ul></div>", False
         elif answer == "b":
             return "Correct! + 1 coin", True
         else:
@@ -317,7 +384,7 @@ class GameLogic:
 
     def task_2_2(self, answer):
         if answer == "question":
-            return "Task 3: Mongolia is vast and empty, what desert covers nearly third of the country? (a. Sahara, b. Arctic, c. Gobi)", False
+            return "<div><strong>Task 3: Mongolia is vast and empty, what desert covers nearly third of the country?</strong><ul><li>a) Sahara</li><li>b) Arctic</li><li>c) Gobi</li></ul></div>", False
         elif answer == "c":
             return "Correct! + 1 coin", True
         else:
@@ -362,7 +429,7 @@ class GameLogic:
 
     def task_2_4(self, answer):
         if answer == "question":
-            return "Task 5: Mongolians enjoy a beverage called Airag, what is it though? (a. Fermented horse milk, b. Fermented berries and water, c. Goat's milk)", False
+            return "<div><strong>Task 5: Mongolians enjoy a beverage called Airag, what is it though?</strong><ul><li>a) Fermented horse milk</li><li>b) Fermented berries and water</li><li>c) Goat's milk</li></ul></div>", False
         elif answer == "a":
             return "Correct! + 1 coin", True
         else:
@@ -371,8 +438,8 @@ class GameLogic:
 
     def task_3_0(self, answer):
         if answer == "question":
-            return "Task 1: What happened at Tiananmen square in 1989? (nothing/a massacre)", False
-        elif answer == "nothing":
+            return "<div><strong>Task 1: What happened at Tiananmen square in 1989?</strong><ul><li>a) Nothing</li><li>b) A massacre</li></ul></div>", False
+        elif answer == "a":
             return "Correct! +social credits", True
         else:
             self.player_status()
@@ -380,7 +447,7 @@ class GameLogic:
 
     def task_3_1(self, answer):
         if answer == "question":
-            return "Task 2: How long is the Great Wall of China? (a. ~21 000km, b. ~28 000km, c. ~5 000km)", False
+            return "<div><strong>Task 2: How long is the Great Wall of China?</strong><ul><li>a) ~21 000km</li><li>b) ~28 000km</li><li>c) ~5 000km</li></ul></div>", False
         elif answer == "a":
             return "Correct! + 1 coin", True
         else:
@@ -389,8 +456,8 @@ class GameLogic:
 
     def task_3_2(self, answer):
         if answer == "question":
-            return "Task 3: 您同意将您的左肾捐给我们吗？ (of course/rather not)", False
-        elif answer == "of course":
+            return "<div><strong>Task 3: 您同意将您的左肾捐给我们吗？</strong><ul><li>a) Of course I will!</li><li>b) Rather not...</li></ul></div>", False
+        elif answer == "a":
             return "Wonderful! We'll come and remove your left kidney in about 3 to 4 business days. + 1 coin", True
         else:
             self.player_status()
@@ -398,7 +465,7 @@ class GameLogic:
 
     def task_3_3(self, answer):
         if answer == "question":
-            return "Task 4: Is Taiwan a part of China? (yes/no)", False
+            return "<div><strong>Task 4: Is Taiwan a part of China?</strong><ul><li>a) Yes!</li><li>b) No? What?</li></ul></div>", False
         elif answer == "yes":
             return "Correct! + social credits", True
         else:
@@ -410,7 +477,7 @@ class GameLogic:
         answer = answer.strip().lower()
 
         if answer == "question":
-            return "Task 5: Welcome to Hong Kong Casino! You totally should play to slot machine! (yes/no)", False
+            return "Task 5: Welcome to Hong Kong Casino! You totally should play to slot machine! [Y/N]", False
 
         if casino_game_state["active"]:
             if casino_game_state["spins_left"] <= 0:
@@ -434,23 +501,23 @@ class GameLogic:
             else:
                 return "Type 'spin' to start gambling!", False
 
-        elif answer == "yes":
+        elif answer == "y":
             casino_game_state["active"] = True
             casino_game_state["spins_left"] = 3
             return "Type 'spin' to start gambling. You have 3 spins.", False
         else:
-            return "A true gambler never puts down a chance to riches, but whatever. Moving on", True
+            return "Did you know 99,999% of gamblers stop beforing winning big? I guess you are one of the masses.", True
 
     def task_4_0(self, answer):
         answer = answer.strip().lower()
 
         if answer == "question":
-            return "Task 1: Geh mir aus dem Weg! Willst du kämpfen? (he wants to fight) (flee/fight)", False
+            return "<div><strong>Task 1: Geh mir aus dem Weg! Willst du kämpfen? (he wants to fight you)</strong><ul><li>a) Flee</li><li>b) Flight</li></ul></div>", False
 
-        if answer == "flee":
+        if answer == "a":
             return "You have decided to ignore and walk away", True
 
-        elif answer == "fight":
+        elif answer == "b":
             if random.random() < 0.5:
                 return "You totally wrecked him! He sleeps on the ground and stole one coin from him!", True
             else:
@@ -462,7 +529,7 @@ class GameLogic:
 
     def task_4_1(self, answer):
         if answer == "question":
-            return "Task 2: Was ist das Nationalgericht Deutschlands? (a. wiener schnitzel, b. sauerbraten, c. currywurst)", False
+            return "<div><strong>Task 2: Was ist das Nationalgericht Deutschlands?(he wants to fight you)</strong><ul><li>a) Wiener Schnitzel</li><li>b) Sauerbraten</li><li>c) Currywurst</li></ul></div>", False
         elif answer == "b":
             return "Richtig! + 1 coin", True
         else:
@@ -471,7 +538,7 @@ class GameLogic:
 
     def task_4_2(self, answer):
         if answer == "question":
-            return "Task 3: AUTOBAHN HOMMELI (yes/no)", False
+            return "Task 3: AUTOBAHN HOMMELI (yes/no)", False #TODO
         elif answer == "no":
             return "Wunderbar", True
         else:
@@ -499,8 +566,8 @@ class GameLogic:
 
     def task_4_4(self, answer):
         if answer == "question":
-            return "Task 5: Sollen wir Polen angreifen? (ja/nein)", False
-        elif answer == "ja":
+            return "<div><strong>Task 5: Sollen wir Polen angreifen?</strong><ul><li>a) Ja</li><li>b) Neine</li></ul></div>", False
+        elif answer == "a":
             return "Wunderbar! + 1 coin", True
         else:
             self.player_status()
