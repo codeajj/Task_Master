@@ -64,7 +64,7 @@ class GameLogic:
 
     def next_task(self): #Tehtyjen tarkastus
         if self.tasks_done == 5:
-            return {"response": "All tasks completed. Proceed to the next level."}
+            return {"terminal": "All tasks completed. Proceed to the next level."}
 
         task = self.task_index[self.level][self.tasks_done]
         self.current_task = task
