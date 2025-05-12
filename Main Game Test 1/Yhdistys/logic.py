@@ -603,7 +603,7 @@ class GameLogic:
             return "<div><strong>Task 5: Start a nuclear war with Russia?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
         elif answer == "a":
             self.end_game()
-            return "End scores updated, sorry this is unfinished", True
+            return "You Win, type scoreboard to see this and older scores", True
         else:
             self.player_status()
-            return "", False
+            return "You lose, Russia destoryed Usa and you too", False
