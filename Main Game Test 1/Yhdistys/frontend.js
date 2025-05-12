@@ -22,6 +22,10 @@ document.addEventListener("DOMContentLoaded", (evt) => {
     const user_input = input.value.trim()
     if (!user_input) return
 
+    if (user_input === "debug_9"){
+      highlightCountryByName("United States of America")
+      weatherUpdate(40.639801, -73.7789)
+    }
     appendToTerminal(`> ${user_input}`)
     input.value = "" //tyhjennä input field inputin jälkeen
 
