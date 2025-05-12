@@ -21,38 +21,6 @@ def get_db_connection():
         database="project_mars"
     )
 
-def get_task_from_db(task_id, answer=None):
-    connection = mysql.connector.connect(
-        host="localhost",
-        user="user",
-        password="test",
-        database="project_mars"
-    )
-    cursor = connection.cursor(dictionary=True)
-
-    cursor.execute("SELECT * FROM tasks WHERE id = %s", (task_id,))
-    task = cursor.fetchone()
-
-    if not task:
-        return "Task not found", False
-
-    if answer == "question":
-        html = f"<div><strong>{task['question']}</strong><ul>"
-        html += f"<li>a) {task['option_a']}</li>"
-        html += f"<li>b) {task['option_b']}</li>"
-        if task['option_c']:
-            html += f"<li>c) {task['option_c']}</li>"
-        if task['option_d']:
-            html += f"<li>d) {task['option_d']}</li>"
-        html += "</ul></div>"
-        return html, False
-
-    if answer == task["correct_answer"]:
-        return "Correct! + 1 coin", True
-    else:
-        # Optional: call self.player_status() here if inside class
-        return "Incorrect!", False
-
 class GameLogic:
     def __init__(self):
         self.start_time = time.time()
@@ -71,6 +39,38 @@ class GameLogic:
             9: [self.task_9_0, self.task_9_1, self.task_9_2, self.task_9_3, self.task_9_4], #America
 
         }
+
+    def get_task_from_db(self, task_id, answer=None):
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="user",
+            password="test",
+            database="project_mars"
+        )
+        cursor = connection.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM tasks WHERE id = %s", (task_id,))
+        task = cursor.fetchone()
+
+        if not task:
+            return "Task not found", False
+
+        if answer == "question":
+            html = f"<div><strong>{task['question']}</strong><ul>"
+            html += f"<li>a) {task['option_a']}</li>"
+            html += f"<li>b) {task['option_b']}</li>"
+            if task['option_c']:
+                html += f"<li>c) {task['option_c']}</li>"
+            if task['option_d']:
+                html += f"<li>d) {task['option_d']}</li>"
+            html += "</ul></div>"
+            return html, False
+
+        if answer == task["correct_answer"]:
+            return "Correct! + 1 coin", True
+        else:
+            self.player_status()
+            return "Incorrect!", False
 
     def end_game(self):
         player_name = "Yrjö"
@@ -239,7 +239,7 @@ class GameLogic:
 
     def next_level(self): #Seuraavaan siirtyminen
         if self.tasks_done < 5:
-            return {"terminal": "No dumbass!"}
+            return {"terminal": "You must complete the tasks before proceeding."}
         else:
             self.level +=1
             self.tasks_done = 0
@@ -304,20 +304,20 @@ class GameLogic:
 # Tehtävät alkaa tästä ----------------------->
 
     def task_0_0(self, answer):
-        return get_task_from_db("0_0", answer)
+        return self.get_task_from_db("0_0", answer)
 
     def task_0_1(self, answer):
-        return get_task_from_db("0_1", answer)
+        return self.get_task_from_db("0_1", answer)
 
     def task_0_2(self, answer):
-        return get_task_from_db("0_2", answer)
+        return self.get_task_from_db("0_2", answer)
 
     def task_0_3(self, answer):
-        return get_task_from_db("0_3", answer)
+        return self.get_task_from_db("0_3", answer)
 
     def task_0_4(self, answer):
         if answer == "question":
-            return "Task 5: You bump into Messi, do you take a picture with him?", False #TODO pitää tehdä!
+            return "Task 5: You bump into Messi, do you take a picture with him?", False
         elif answer == "yes":
             return "Correct! + 1 coin", True
         else:
@@ -325,17 +325,17 @@ class GameLogic:
             return "Incorrect!", False
 
     def task_1_0(self, answer):
-        return get_task_from_db("1_0", answer)
+        return self.get_task_from_db("1_0", answer)
 
     def task_1_1(self, answer):
-        return get_task_from_db("1_1", answer)
+        return self.get_task_from_db("1_1", answer)
 
     def task_1_2(self, answer):
-        return get_task_from_db("1_2", answer)
+        return self.get_task_from_db("1_2", answer)
 
     def task_1_3(self, answer):
         if answer == "question":
-            return "<div><strong>Task 4: A kangaroo insulted your mother, punch him?</strong><ul><li>a) Yes</li><li>b) No</li></ul></div>", False #TODO tehtävä itsessään
+            return "<div><strong>Task 4: A kangaroo insulted your mother, punch him?</strong><ul><li>a) Yes</li><li>b) No</li></ul></div>", False
         elif answer == "a":
             return "Correct! + 1 coin", True
         else:
@@ -344,7 +344,7 @@ class GameLogic:
 
     def task_1_4(self, answer):
         if answer == "question":
-            return "Task 5: Go surfing? a) Yes b) No", False #TODO koko juttu
+            return "Task 5: Go surfing? a) Yes b) No", False
         elif answer == "a":
             return "Correct! + 1 coin", True
         else:
@@ -352,13 +352,13 @@ class GameLogic:
             return "Incorrect!", False
 
     def task_2_0(self, answer):
-        return get_task_from_db("2_0", answer)
+        return self.get_task_from_db("2_0", answer)
 
     def task_2_1(self, answer):
-        return get_task_from_db("2_1", answer)
+        return self.get_task_from_db("2_1", answer)
 
     def task_2_2(self, answer):
-        return get_task_from_db("2_2", answer)
+        return self.get_task_from_db("2_2", answer)
 
     def task_2_3(self, answer):
         global archery_game_state
@@ -397,19 +397,19 @@ class GameLogic:
             return "Alright, moving on", True
 
     def task_2_4(self, answer):
-        return get_task_from_db("2_4", answer)
+        return self.get_task_from_db("2_4", answer)
 
     def task_3_0(self, answer):
-        return get_task_from_db("3_0", answer)
+        return self.get_task_from_db("3_0", answer)
 
     def task_3_1(self, answer):
-        return get_task_from_db("3_1", answer)
+        return self.get_task_from_db("3_1", answer)
 
     def task_3_2(self, answer):
-        return get_task_from_db("3_2", answer)
+        return self.get_task_from_db("3_2", answer)
 
     def task_3_3(self, answer):
-        return get_task_from_db("3_3", answer)
+        return self.get_task_from_db("3_3", answer)
 
     def task_3_4(self, answer):
         global casino_game_state
@@ -467,16 +467,16 @@ class GameLogic:
             return "No other options, lil bro", False
 
     def task_4_1(self, answer):
-        return get_task_from_db("4_1", answer)
+        return self.get_task_from_db("4_1", answer)
 
     def task_4_2(self, answer):
         if answer == "question":
-            return "Task 3: AUTOBAHN HOMMELI (yes/no)", False #TODO koko juttu vaikka 30% et ajaa kolarin
+            return "Task 3: Filler, answer = 'no'", False
         elif answer == "no":
-            return "Wunderbar", True
+            return "Proceeding.", True
         else:
             self.player_status()
-            return "Wunderbar!", False
+            return "Type 'no'", False
 
     def task_4_3(self, answer):
         answer = answer.strip().lower()
@@ -498,16 +498,16 @@ class GameLogic:
             return "No other options, lil bro", False
 
     def task_4_4(self, answer):
-        return get_task_from_db("4_4", answer)
+        return self.get_task_from_db("4_4", answer)
 
     def task_5_0(self, answer):
-        return get_task_from_db("5_0", answer)
+        return self.get_task_from_db("5_0", answer)
 
     def task_5_1(self, answer):
-        return get_task_from_db("5_1", answer)
+        return self.get_task_from_db("5_1", answer)
 
     def task_5_2(self, answer):
-        return get_task_from_db("5_2", answer)
+        return self.get_task_from_db("5_2", answer)
 
     def task_5_3(self, answer):
         answer = answer.strip().lower()
@@ -528,19 +528,19 @@ class GameLogic:
             return "No other options, lil bro", False
 
     def task_5_4(self, answer):
-        return get_task_from_db("5_4", answer)
+        return self.get_task_from_db("5_4", answer)
 
     def task_6_0(self, answer):
-        return get_task_from_db("6_0", answer)
+        return self.get_task_from_db("6_0", answer)
 
     def task_6_1(self, answer):
-        return get_task_from_db("6_1", answer)
+        return self.get_task_from_db("6_1", answer)
 
     def task_6_2(self, answer):
-        return get_task_from_db("6_2", answer)
+        return self.get_task_from_db("6_2", answer)
 
     def task_6_3(self, answer):
-        return get_task_from_db("6_3", answer)
+        return self.get_task_from_db("6_3", answer)
 
     def task_6_4(self, answer):
         if answer == "question":
@@ -556,46 +556,46 @@ class GameLogic:
             return "You made the wrong choice, stumbled and lost one HP", False
 
     def task_7_0(self, answer):
-        return get_task_from_db("7_0", answer)
+        return self.get_task_from_db("7_0", answer)
 
     def task_7_1(self, answer):
-        return get_task_from_db("7_1", answer)
+        return self.get_task_from_db("7_1", answer)
 
     def task_7_2(self, answer):
-        return get_task_from_db("7_2", answer)
+        return self.get_task_from_db("7_2", answer)
 
     def task_7_3(self, answer):
-        return get_task_from_db("7_3", answer)
+        return self.get_task_from_db("7_3", answer)
 
     def task_7_4(self, answer):
-        return get_task_from_db("7_4", answer)
+        return self.get_task_from_db("7_4", answer)
 
     def task_8_0(self, answer):
-        return get_task_from_db("8_0", answer)
+        return self.get_task_from_db("8_0", answer)
 
     def task_8_1(self, answer):
-        return get_task_from_db("8_1", answer)
+        return self.get_task_from_db("8_1", answer)
 
     def task_8_2(self, answer):
-        return get_task_from_db("8_2", answer)
+        return self.get_task_from_db("8_2", answer)
 
     def task_8_3(self, answer):
-        return get_task_from_db("8_3", answer)
+        return self.get_task_from_db("8_3", answer)
 
     def task_8_4(self, answer):
-        return get_task_from_db("8_4", answer)
+        return self.get_task_from_db("8_4", answer)
 
     def task_9_0(self, answer):
-        return get_task_from_db("9_0", answer)
+        return self.get_task_from_db("9_0", answer)
 
     def task_9_1(self, answer):
-        return get_task_from_db("9_1", answer)
+        return self.get_task_from_db("9_1", answer)
 
     def task_9_2(self, answer):
-        return get_task_from_db("9_2", answer)
+        return self.get_task_from_db("9_2", answer)
 
     def task_9_3(self, answer):
-        return get_task_from_db("9_3", answer)
+        return self.get_task_from_db("9_3", answer)
 
 
     def task_9_4(self, answer):
@@ -603,7 +603,6 @@ class GameLogic:
             return "<div><strong>Task 5: Start a nuclear war with Russia?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
         elif answer == "a":
             self.end_game()
-            return "You Win, type scoreboard to see this and older scores", True
+            return "<div><strong>You Win!</strong> Everyone else died and you are the smartest man alive!<ul><li>Type 'scoreboard' to see this and older scores</li></ul>", True
         else:
-            self.player_status()
             return "You lose, Russia destoryed Usa and you too", False
