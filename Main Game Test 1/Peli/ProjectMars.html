@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <title>Task Manager</title>
+<title>Site</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link crossorigin="" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     rel="stylesheet"/>
+    <script src="map.js"></script>
+    <script src="frontend.js"></script>
+
+</head>
+
+<body>
+    <header class="retro-container-header old-crt-monitor">Task Master</header>
+    <div class="retro-container old-crt-monitor">
+        <div id="terminal">
+            <!-- Kaikki maat saat highlitetyksi tällä highlightCountryByName funktiolla -->
+        </div>
+        <form id="input-form">
+            <input id="input" type="text" placeholder=">">
+            <input type="submit" value="Submit">
+            <button type="button" id="task">Task</button>
+            <button type="button" id="next-level">Next Level</button>
+        </form>
+
+
+    </div>
+    <div id="map-wrapper">
+    <div id="map"></div>
+    <div class="crt-overlay"></div>
+</div>
+    <div class ="old-crt-monitor-faster retro-container-smaller">
+        <div class="weather">weather
+            <div id="weather-here">
+                <h6 id="weather-text"></h6>
+            </div>
+        <div id="image-container">
+            <img id="weather-image" alt="weather icon" />
+        </div>
+        </div>
+        <div class="info">
+            <div id="current-level">Level: 1</div>
+
+        <div class="time"><h6 id="current-time"></h6></div>        </div>
+    </div>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script crossorigin=""
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</body>
+</html>
