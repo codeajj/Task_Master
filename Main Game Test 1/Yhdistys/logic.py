@@ -21,6 +21,38 @@ def get_db_connection():
         database="project_mars"
     )
 
+def get_task_from_db(task_id, answer=None):
+    connection = mysql.connector.connect(
+        host="localhost",
+        user="user",
+        password="test",
+        database="project_mars"
+    )
+    cursor = connection.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM tasks WHERE id = %s", (task_id,))
+    task = cursor.fetchone()
+
+    if not task:
+        return "Task not found", False
+
+    if answer == "question":
+        html = f"<div><strong>{task['question']}</strong><ul>"
+        html += f"<li>a) {task['option_a']}</li>"
+        html += f"<li>b) {task['option_b']}</li>"
+        if task['option_c']:
+            html += f"<li>c) {task['option_c']}</li>"
+        if task['option_d']:
+            html += f"<li>d) {task['option_d']}</li>"
+        html += "</ul></div>"
+        return html, False
+
+    if answer == task["correct_answer"]:
+        return "Correct! + 1 coin", True
+    else:
+        # Optional: call self.player_status() here if inside class
+        return "Incorrect!", False
+
 class GameLogic:
     def __init__(self):
         self.start_time = time.time()
@@ -272,44 +304,20 @@ class GameLogic:
 # Tehtävät alkaa tästä ----------------------->
 
     def task_0_0(self, answer):
-        if answer == "question":
-            return "<di><strong>Task 1: What is the capital of Argentina?</strong><ul><li>a) Buenos Aires</li><li>b) Helsinki</li><li>c) Madrid</li><li>d) Lieksà</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("0_0", answer)
 
     def task_0_1(self, answer):
-        if answer == "question":
-            return "<di><strong>Task 2: What is the national language of Argnetina?</strong><ul><li>a) Finnish</li><li>b) Peso</li><li>c) Italian</li><li>d) Spanish</li></ul>", False
-        elif answer == "d":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("0_1", answer)
 
     def task_0_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: Did Hitler escape to Argentina?</strong><ul><li>a) Yes</li><li>b) No</li><li>c) Maybe</li></ul></div>", False
-        elif answer == "c":
-            return "Correct! I think? + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("0_2", answer)
 
     def task_0_3(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 4: What is the currency of Argentina?</strong><ul><li>a) Euro</li><li>b) Peso</li><li>c) Dollar</li><li>d) Brazilian dollar</li></ul></div>", False
-        elif answer == "b":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("0_3", answer)
 
     def task_0_4(self, answer):
         if answer == "question":
-            return "Task 5: You bump into Mesi, do you take a picture with him?", False #TODO pitää tehdä!
+            return "Task 5: You bump into Messi, do you take a picture with him?", False #TODO pitää tehdä!
         elif answer == "yes":
             return "Correct! + 1 coin", True
         else:
@@ -317,31 +325,13 @@ class GameLogic:
             return "Incorrect!", False
 
     def task_1_0(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 1: What ominous rock lies in the center of Australia?</strong><ul><li>a) Jack</li><li>b) There is no rock</li><li>c) Uluru</li><li>d) Omuamua</li></ul></div>", False
-        elif answer == "c":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("1_0", answer)
 
     def task_1_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: What is the most populous city in Australia?</strong><ul><li>a) Sydney</li><li>b) Melbourne</li><li>c) Perth</li><li>d) Adelaide</li></ul></div>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("1_1", answer)
 
     def task_1_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: How big is Australia?</strong><ul><li>a) 9,2 million km2</li><li>b) 7,7 million km2</li><li>c) 2,9 million km2</li><li>d) 8,1 million km2</li></ul></div>", False
-        elif answer == "b":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("1_2", answer)
 
     def task_1_3(self, answer):
         if answer == "question":
@@ -362,31 +352,13 @@ class GameLogic:
             return "Incorrect!", False
 
     def task_2_0(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 1: The Mongolian capital is known for being the ____ capital on Earth.</strong><ul><li>a) Coldest</li><li>b) Densest</li><li>c) Largest</li><li>d) Empty</li></ul></div>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("2_0", answer)
 
     def task_2_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: Mongolia has the lowest population density in the world, how many people are there per square kilometer?</strong><ul><li>a) 4/km2</li><li>b) 2/km2</li><li>c) 12/km2</li><li>d) 6/km2</li></ul></div>", False
-        elif answer == "b":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("2_1", answer)
 
     def task_2_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: Mongolia is vast and empty, what desert covers nearly third of the country?</strong><ul><li>a) Sahara</li><li>b) Arctic</li><li>c) Gobi</li></ul></div>", False
-        elif answer == "c":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("2_2", answer)
 
     def task_2_3(self, answer):
         global archery_game_state
@@ -425,49 +397,19 @@ class GameLogic:
             return "Alright, moving on", True
 
     def task_2_4(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 5: Mongolians enjoy a beverage called Airag, what is it though?</strong><ul><li>a) Fermented horse milk</li><li>b) Fermented berries and water</li><li>c) Goat's milk</li></ul></div>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("2_4", answer)
 
     def task_3_0(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 1: What happened at Tiananmen square in 1989?</strong><ul><li>a) Nothing</li><li>b) A massacre</li></ul></div>", False
-        elif answer == "a":
-            return "Correct! +social credits", True
-        else:
-            self.player_status()
-            return "Incorrect! Absolutely nothing happened", False
+        return get_task_from_db("3_0", answer)
 
     def task_3_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: How long is the Great Wall of China?</strong><ul><li>a) ~21 000km</li><li>b) ~28 000km</li><li>c) ~5 000km</li></ul></div>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("3_1", answer)
 
     def task_3_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: 您同意将您的左肾捐给我们吗？</strong><ul><li>a) Of course I will!</li><li>b) Rather not...</li></ul></div>", False
-        elif answer == "a":
-            return "Wonderful! We'll come and remove your left kidney in about 3 to 4 business days. + 1 coin", True
-        else:
-            self.player_status()
-            return "What a shame, we will find you anyway", False
+        return get_task_from_db("3_2", answer)
 
     def task_3_3(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 4: Is Taiwan a part of China?</strong><ul><li>a) Yes!</li><li>b) No? What?</li></ul></div>", False
-        elif answer == "a":
-            return "Correct! + social credits", True
-        else:
-            self.player_status()
-            return "KAAPPAUS TÄHÄN", False
+        return get_task_from_db("3_3", answer)
 
     def task_3_4(self, answer):
         global casino_game_state
@@ -525,13 +467,7 @@ class GameLogic:
             return "No other options, lil bro", False
 
     def task_4_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: Was ist das Nationalgericht Deutschlands?(he wants to fight you)</strong><ul><li>a) Wiener Schnitzel</li><li>b) Sauerbraten</li><li>c) Currywurst</li></ul></div>", False
-        elif answer == "b":
-            return "Richtig! + 1 coin", True
-        else:
-            self.player_status()
-            return "Falsch!", False
+        return get_task_from_db("4_1", answer)
 
     def task_4_2(self, answer):
         if answer == "question":
@@ -562,40 +498,16 @@ class GameLogic:
             return "No other options, lil bro", False
 
     def task_4_4(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 5: Sollen wir Polen angreifen?</strong><ul><li>a) Ja</li><li>b) Neine</li></ul></div>", False
-        elif answer == "a":
-            return "Wunderbar! + 1 coin", True
-        else:
-            self.player_status()
-            return "Verlierer.", False
+        return get_task_from_db("4_4", answer)
 
     def task_5_0(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 1: Is dziewięćsetdziewięćdziesięciodziewięcionarodowościowego a real word in the beautiful Polish language?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("5_0", answer)
 
     def task_5_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: Was the original Fortnite battle royale map based off of Poland?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("5_1", answer)
 
     def task_5_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: What would be a traditional Polish breakfast?</strong><ul><li>a) A cigarette</li><li>b) A cigarette and a shot of alcohol</li><li>c) A cigarette and a bottle of alcohol</li><li>d) A pack of cigarettes and a bottle of alcohol</li></ul>", False
-        elif answer == "d":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("5_2", answer)
 
     def task_5_3(self, answer):
         answer = answer.strip().lower()
@@ -616,49 +528,19 @@ class GameLogic:
             return "No other options, lil bro", False
 
     def task_5_4(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 5: What is the sacred gift Poland invented for this world?</strong><ul><li>a) Toothpaste</li><li>b) Vodka</li><li>c) Paper clips</li><li>d) Mini-computers</li></ul>", False
-        elif answer == "b":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("5_4", answer)
 
     def task_6_0(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 1: Luxembourg is known for being a rather wealthy place, how much is their GDP per capita?</strong><ul><li>a) 140 000€</li><li>b) 60 000€</li><li>c) 250 000€</li><li>d) 100 000€</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("6_0", answer)
 
     def task_6_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: The country is also known for being small, how small are they exactly?</strong><ul><li>a) 30 000km2</li><li>b) 6 000km</li><li>c) 2 600km</li><li>d) 130 000km2</li></ul>", False
-        elif answer == "c":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("6_1", answer)
 
     def task_6_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: Luxembourg has a very generic flag with red, white and blue. In what order does it go? (from up to down)</strong><ul><li>a) Red White Blue</li><li>b) Blue White Red</li><li>c) White Red Blue</li><li>d) Blue Red White</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("6_2", answer)
 
     def task_6_3(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 4: For its size, Luxembourg has an extensive public transit system, what does it cost though?</strong><ul><li>a) It's cheap</li><li>b) It's expensive</li><li>c) It's free</li></ul>", False
-        elif answer == "c":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("6_3", answer)
 
     def task_6_4(self, answer):
         if answer == "question":
@@ -674,130 +556,46 @@ class GameLogic:
             return "You made the wrong choice, stumbled and lost one HP", False
 
     def task_7_0(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 1: Norway's a very mountainous country, what's their highest peak called?</strong><ul><li>a) Oksskolten</li><li>b) Galdhøpiggen</li><li>c) Store Trolla</li><li>d) Saana</li></ul>", False
-        elif answer == "b":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("7_0", answer)
 
     def task_7_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: Norwegian is a beautiful north Germanic language, having roots to old Norse. Is it true that it has two different written forms?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("7_1", answer)
 
     def task_7_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: Norway's coastline is often misunderstood, how long is it exactly?</strong><ul><li>a) 23 718km</li><li>b) 83 281km</li><li>c) 1 288km</li><li>d) 98 766km</li></ul>", False
-        elif answer == "b":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("7_2", answer)
 
     def task_7_3(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 4: Norwegian students celebrate 'Russfeiring', does it really go on for a whole month?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("7_3", answer)
 
     def task_7_4(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 5: Is the colonel-in-chief of the Norwegian King's Guard... a penguin?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("7_4", answer)
 
     def task_8_0(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 1: Is BTS your favourite band?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("8_0", answer)
 
     def task_8_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: Which one of these is a world famous Korean food?</strong><ul><li>a) Tempura</li><li>b) Tunkatsu</li><li>c) Kimchi</li><li>d) Lörtsy</li></ul>", False
-        elif answer == "c":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("8_1", answer)
 
     def task_8_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: Seoul is the largest city in the country, how many people live inside the metropolitan area?</strong><ul><li>a) 15 000 000</li><li>b) 20 000 000</li><li>c) 25 000 000</li><li>d) 30 000 000</li></ul>", False
-        elif answer == "c":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("8_2", answer)
 
     def task_8_3(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 4: Are you a North Korean defector?</strong><ul><li>a) Yes</li><li>b) No</li><li>c) What?</li><li>d) Maybe</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("8_3", answer)
 
     def task_8_4(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 5: 리그 오브 레전드를 하시나요?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
-        elif answer == "yes":
-            return "Good to hear! + 1 coin", True
-        else:
-            self.player_status()
-            return "What a shame", False
+        return get_task_from_db("8_4", answer)
 
     def task_9_0(self, answer):
-        if answer == "question":
-            return "<di><strong>Task 1: Everyone stand up for the pledge of allegiance! What's the 6th word of the verse?</strong><ul><li>a) Flag</li><li>b) I</li><li>c) America</li><li>d) God</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("9_0", answer)
 
     def task_9_1(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 2: They sure love their guns, maybe even more than they love their siblings, are there more civilian firearms owned than people themselves?</strong><ul><li>a) Yes</li><li>b) No</li></ul>", False
-        elif answer == "a":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("9_1", answer)
 
     def task_9_2(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 3: When did the greatest country on Earth gain independence?</strong><ul><li>a) 1677</li><li>b) 1750</li><li>c) 1776</li><li>d) 1803</li></ul>", False
-        elif answer == "c":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Incorrect!", False
+        return get_task_from_db("9_2", answer)
 
     def task_9_3(self, answer):
-        if answer == "question":
-            return "<div><strong>Task 4: Do you believe in our lord and savior Donald Trump?</strong><ul><li>a) Yes</li><li>b) Yes</li></ul>", False
-        elif answer == "a" or "b":
-            return "Correct! + 1 coin", True
-        else:
-            self.player_status()
-            return "Wrong choice, you got punched. - 1 HP", False
+        return get_task_from_db("9_3", answer)
 
 
     def task_9_4(self, answer):
